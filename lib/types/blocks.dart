@@ -60,4 +60,41 @@ class BLOCKS {
         'embedded-entry-block',
         'embedded-asset-block',
       ];
+  static fromString(String value) {
+    if (values.contains(value)) {
+      switch (value) {
+        case 'document':
+          return DOCUMENT;
+        case 'paragraph':
+          return PARAGRAPH;
+        case 'heading-1':
+          return HEADING_1;
+        case 'heading-2':
+          return HEADING_2;
+        case 'heading-3':
+          return HEADING_3;
+        case 'heading-4':
+          return HEADING_4;
+        case 'heading-5':
+          return HEADING_5;
+        case 'heading-6':
+          return HEADING_6;
+        case 'ordered-list':
+          return OL_LIST;
+        case 'unordered-list':
+          return UL_LIST;
+        case 'list-item':
+          return LIST_ITEM;
+        case 'hr':
+          return HR;
+        case 'blockquote':
+          return QUOTE;
+        case 'embedded-entry-block':
+          return EMBEDDED_ENTRY;
+        case 'embedded-asset-block':
+          return EMBEDDED_ASSET;
+      }
+    }
+    return null;
+  }
 }

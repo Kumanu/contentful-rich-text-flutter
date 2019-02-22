@@ -13,20 +13,28 @@ import 'package:flutter/material.dart';
 import 'package:html_unescape/html_unescape_small.dart';
 
 /// Contentful Rich Text widget
-class ContentFulRichText {
+class ContentfulRichText {
   RenderNode defaultNodeRenderers = RenderNode({
     BLOCKS.PARAGRAPH.value: (node, next) => RichText(
-          text: TextSpan(text: node.value, children: next(node.content)),
+          text: TextSpan(
+            children: next(node['content']),
+          ),
         ),
-    BLOCKS.HEADING_1.value: (node, next) => Heading(level: BLOCKS.HEADING_1, text: node.value, content: node.content),
-    BLOCKS.HEADING_2.value: (node, next) => Heading(level: BLOCKS.HEADING_2, text: node.value, content: node.content),
-    BLOCKS.HEADING_3.value: (node, next) => Heading(level: BLOCKS.HEADING_3, text: node.value, content: node.content),
-    BLOCKS.HEADING_4.value: (node, next) => Heading(level: BLOCKS.HEADING_4, text: node.value, content: node.content),
-    BLOCKS.HEADING_5.value: (node, next) => Heading(level: BLOCKS.HEADING_5, text: node.value, content: node.content),
-    BLOCKS.HEADING_6.value: (node, next) => Heading(level: BLOCKS.HEADING_6, text: node.value, content: node.content),
+    BLOCKS.HEADING_1.value: (node, next) =>
+        Heading(level: BLOCKS.HEADING_1, text: node['value'], content: node['content']),
+    BLOCKS.HEADING_2.value: (node, next) =>
+        Heading(level: BLOCKS.HEADING_2, text: node['value'], content: node['content']),
+    BLOCKS.HEADING_3.value: (node, next) =>
+        Heading(level: BLOCKS.HEADING_3, text: node['value'], content: node['content']),
+    BLOCKS.HEADING_4.value: (node, next) =>
+        Heading(level: BLOCKS.HEADING_4, text: node['value'], content: node['content']),
+    BLOCKS.HEADING_5.value: (node, next) =>
+        Heading(level: BLOCKS.HEADING_5, text: node['value'], content: node['content']),
+    BLOCKS.HEADING_6.value: (node, next) =>
+        Heading(level: BLOCKS.HEADING_6, text: node['value'], content: node['content']),
     BLOCKS.EMBEDDED_ENTRY.value: (node, next) => Container(), // TODO: implement
-    BLOCKS.UL_LIST.value: (node, next) => UnorderedList(node.content),
-    BLOCKS.OL_LIST.value: (node, next) => OrderedList(node.content),
+    BLOCKS.UL_LIST.value: (node, next) => UnorderedList(node['content']),
+    BLOCKS.OL_LIST.value: (node, next) => OrderedList(node['content']),
     BLOCKS.LIST_ITEM.value: (node, next) => ListItem(
           text: node.value,
           // TODO: not sure we can use nodeType to determine the type of LIST_ITEM
@@ -41,77 +49,153 @@ class ContentFulRichText {
   });
 
   RenderMark defaultMarkRenderers = RenderMark({
-    MARKS.BOLD.value: (text) => TextSpan(text: text, style: TextStyle(fontWeight: FontWeight.bold)),
-    MARKS.ITALIC.value: (text) => TextSpan(text: text, style: TextStyle(fontStyle: FontStyle.italic)),
-    MARKS.UNDERLINE.value: (text) => TextSpan(text: text, style: TextStyle(decoration: TextDecoration.underline)),
-    MARKS.CODE.value: (text) => TextSpan(text: text, style: TextStyle(decoration: TextDecoration.underline)),
+    MARKS.BOLD.value: (text) => TextSpan(
+          text: text,
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+        ),
+    MARKS.ITALIC.value: (text) => TextSpan(
+          text: text,
+          style: TextStyle(fontStyle: FontStyle.italic, color: Colors.black),
+        ),
+    MARKS.UNDERLINE.value: (text) => TextSpan(
+          text: text,
+          style: TextStyle(decoration: TextDecoration.underline, color: Colors.black),
+        ),
+    MARKS.CODE.value: (text) => TextSpan(
+          text: text,
+          style: TextStyle(decoration: TextDecoration.underline, color: Colors.black),
+        ),
   });
 
   static Widget defaultInline(INLINES type, Inline node) => Container(); // TODO: implement
 
-  Document richTextDocument;
+  dynamic richTextJson;
   Options options;
+  Document richTextDocument;
 
-  ContentFulRichText(this.richTextDocument, {this.options});
+  ContentfulRichText(this.richTextJson, {this.options});
 
   Widget get documentToWidgetTree {
-    if (richTextDocument == null || richTextDocument.content == null) {
+    if (richTextJson == null || richTextJson['content'] == null) {
       return Container();
     }
 
-    Map<dynamic, Function> renderNode = Map.from(defaultNodeRenderers.renderNodes);
-    renderNode.addAll(options?.renderNode?.renderNodes);
-    Map<dynamic, Function> renderMark = Map.from(defaultMarkRenderers.renderMarks);
-    renderMark.addAll(options?.renderMark?.renderMarks);
+    // parse richTextData to a Document from JSON form
+    richTextDocument = _parseRichTextJson();
 
-    return nodeListToWidget(
-      richTextDocument.content,
-      renderNode: renderNode,
-      renderMark: renderMark,
+    Map<dynamic, Function> renderNode = Map.from(defaultNodeRenderers.renderNodes);
+    renderNode.addAll(options?.renderNode?.renderNodes ?? Map<dynamic, Function>());
+    Map<dynamic, Function> renderMark = Map.from(defaultMarkRenderers.renderMarks);
+    renderMark.addAll(options?.renderMark?.renderMarks ?? Map<dynamic, Function>());
+
+    return Container(
+      child: nodeListToWidget(
+        richTextDocument.content,
+        renderNode: renderNode,
+        renderMark: renderMark,
+      ),
     );
   }
 
   Widget nodeListToWidget(
-    List<TopLevelBlock> nodes, {
+    List<dynamic> nodes, {
     Map<dynamic, Function> renderNode,
     Map<dynamic, Function> renderMark,
+    bool isParagraph = false,
   }) {
+    print('nodeListToWidget ${nodes.length}');
+    if (isParagraph) {
+      return RichText(
+        text: TextSpan(
+          children: List<TextSpan>.from(
+            nodes.map<TextSpan>(
+              (dynamic node) => _processTextNode(node, renderMark),
+            ),
+          ),
+        ),
+      );
+    }
     return Column(
-      children: nodes.map<Widget>(
-        (TopLevelBlock node) => nodeToWidget(node, renderNode: renderNode, renderMark: renderMark),
+      children: List<Widget>.from(
+        nodes.map<Widget>((dynamic node) => nodeToWidget(
+              node,
+              renderNode: renderNode,
+              renderMark: renderMark,
+            )),
       ),
     );
   }
 
   Widget nodeToWidget(
-    TopLevelBlock node, {
+    dynamic node, {
     Map<dynamic, Function> renderNode,
     Map<dynamic, Function> renderMark,
   }) {
+    print('nodeToWidget entry $node');
     if (Helpers.isText(node)) {
-      TextNode textNode = node as TextNode;
-      String nodeValue = HtmlUnescape().convert(textNode.value);
-      if (textNode.marks.length > 0) {
-        return RichText(
-          text: TextSpan(
-            children: textNode.marks.map<TextSpan>(
-              (Mark mark) => renderMark[mark.type](textNode.value),
-            ),
-          ),
-        );
-      }
-      return Text(nodeValue);
+      return RichText(text: _processTextNode(node, renderMark));
+    } else if (Helpers.isParagraph(node)) {
+      print('we have a paragraph');
+      return renderNode[node['nodeType']](
+        node,
+        (nodes) => List<TextSpan>.from(nodes.map((node) => _processTextNode(node, renderMark))),
+      );
     } else {
+      print('nodeToWidget not text');
       Next nextNode = (nodes) => nodeListToWidget(
             nodes,
             renderNode: renderNode,
             renderMark: renderMark,
           );
-      if (node.nodeType == null || renderNode[node.nodeType] == null) {
+      if (node['nodeType'] == null || renderNode[node['nodeType']] == null) {
+        print('unrecognized node: ${node['nodeType']}');
         // TODO: Figure what to return when passed an unrecognized node.
         return Container();
       }
-      return renderNode[node.nodeType](node, nextNode);
+      return renderNode[node['nodeType']](node, nextNode);
     }
+  }
+
+  TextSpan _processTextNode(node, Map<dynamic, Function> renderMark) {
+    print('nodeToWidget text');
+    TextNode textNode = TextNode(node);
+    String nodeValue = HtmlUnescape().convert(textNode.value);
+    if (textNode.marks != null && textNode.marks.length > 0) {
+      print('TextNode has marks: ${textNode.value}, ${textNode.marks}');
+      List<TextSpan> _textSpans = List<TextSpan>();
+      textNode.marks.forEach((mark) {
+        // TODO: Currently prints the value once for each Mark instead
+        // of wrapping the marks around the value and applying all of them to
+        // the single content value
+        print('TextNode Mark: ${mark.type}');
+        if (mark.type != null) {
+          _textSpans.add(renderMark[mark.type](textNode.value));
+        }
+      });
+      return TextSpan(
+        style: TextStyle(
+          color: Colors.black,
+        ),
+        children: _textSpans,
+      );
+    }
+    print('TextNode no marks: ${textNode.value}');
+    return TextSpan(
+      children: <TextSpan>[
+        TextSpan(
+          text: nodeValue,
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Document _parseRichTextJson() {
+    if (richTextJson == null || richTextJson['nodeType'] != 'document') {
+      return null;
+    }
+    return Document.fromJson(richTextJson);
   }
 }

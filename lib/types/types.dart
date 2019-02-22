@@ -23,19 +23,47 @@ abstract class TopLevelBlock extends Node<TopLevelBlockEnum> {
   TopLevelBlockEnum _nodeType;
 }
 
-abstract class Document extends Node<BLOCKS> {
+class Document extends Node<BLOCKS> {
   BLOCKS _nodeType = BLOCKS.DOCUMENT;
-  List<TopLevelBlock> content;
+  List<dynamic> content;
+
+  Document({this.content, String nodeType, Map<String, dynamic> data}) {
+    this._nodeType = BLOCKS.fromString(nodeType);
+    this.data = data;
+  }
+
+  factory Document.fromJson(dynamic richTextJson) {
+    if (richTextJson == null) {
+      return null;
+    }
+    return Document(
+      content: richTextJson['content'],
+      nodeType: richTextJson['nodeType'],
+      data: richTextJson['data'],
+    );
+  }
 }
 
-abstract class TextNode extends Node<String> {
+class TextNode extends Node<String> {
   String _nodeType = 'text';
   String value;
   List<Mark> marks;
+
+  TextNode(dynamic node) {
+    this.value = node['value'];
+    this._nodeType = node['nodeType'];
+    List<Mark> _marks = List<Mark>();
+    node['marks']?.forEach((mark) {
+      _marks.add(Mark(mark['type']));
+    });
+    this.marks = _marks;
+  }
 }
 
-abstract class Mark {
+class Mark {
   String type;
+
+  Mark(this.type);
 }
 
 // Helper types for Rich Text Rendering
