@@ -39,7 +39,7 @@ class Heading6 extends Block {
 }
 
 // Paragraph
-class Paragraph extends Block {
+class ParagraphNode extends Block {
   BLOCKS nodeType = BLOCKS.PARAGRAPH;
   Map<String, dynamic> data;
   List<dynamic> content;

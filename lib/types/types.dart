@@ -69,7 +69,6 @@ class Mark {
 // Helper types for Rich Text Rendering
 typedef Next = dynamic Function(List<dynamic> nodes);
 typedef NodeRenderer = Widget Function(dynamic node, Next next);
-typedef NodeMarks = TextSpan Function(String text);
 
 class RenderNode<T> {
   Map<T, NodeRenderer> renderNodes; // NodeRenderer not Function
@@ -77,7 +76,7 @@ class RenderNode<T> {
 }
 
 class RenderMark<T> {
-  Map<T, NodeMarks> renderMarks;
+  Map<T, TextStyle> renderMarks;
   RenderMark(this.renderMarks);
 }
 

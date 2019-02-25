@@ -12,8 +12,7 @@ class MARKS {
   static const BOLD = const MARKS._internal('BOLD', 'bold');
   static const ITALIC = const MARKS._internal('ITALIC', 'italic');
   static const UNDERLINE = const MARKS._internal('UNDERLINE', 'underline');
-  static const CODE = const MARKS._internal('CODE', 'code');
 
-  static List<String> get keys => ['BOLD', 'ITALIC', 'UNDERLINE', 'CODE'];
-  static List<String> get values => ['bold', 'italic', 'underline', 'underline'];
+  static List<String> get keys => ['BOLD', 'ITALIC', 'UNDERLINE'];
+  static List<String> get values => ['bold', 'italic', 'underline'];
 }

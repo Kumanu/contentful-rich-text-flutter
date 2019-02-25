@@ -48,23 +48,11 @@ class ContentfulRichText {
     INLINES.HYPERLINK.value: (node, next) => Container(), // TODO: implement
   });
 
+  // Can only be used to apply styling, does not return a TextSpan
   RenderMark defaultMarkRenderers = RenderMark({
-    MARKS.BOLD.value: (text) => TextSpan(
-          text: text,
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-        ),
-    MARKS.ITALIC.value: (text) => TextSpan(
-          text: text,
-          style: TextStyle(fontStyle: FontStyle.italic, color: Colors.black),
-        ),
-    MARKS.UNDERLINE.value: (text) => TextSpan(
-          text: text,
-          style: TextStyle(decoration: TextDecoration.underline, color: Colors.black),
-        ),
-    MARKS.CODE.value: (text) => TextSpan(
-          text: text,
-          style: TextStyle(decoration: TextDecoration.underline, color: Colors.black),
-        ),
+    MARKS.BOLD.value: TextStyle(fontWeight: FontWeight.bold),
+    MARKS.ITALIC.value: TextStyle(fontStyle: FontStyle.italic),
+    MARKS.UNDERLINE.value: TextStyle(decoration: TextDecoration.underline),
   });
 
   static Widget defaultInline(INLINES type, Inline node) => Container(); // TODO: implement
@@ -85,8 +73,8 @@ class ContentfulRichText {
 
     Map<dynamic, Function> renderNode = Map.from(defaultNodeRenderers.renderNodes);
     renderNode.addAll(options?.renderNode?.renderNodes ?? Map<dynamic, Function>());
-    Map<dynamic, Function> renderMark = Map.from(defaultMarkRenderers.renderMarks);
-    renderMark.addAll(options?.renderMark?.renderMarks ?? Map<dynamic, Function>());
+    Map<dynamic, TextStyle> renderMark = Map.from(defaultMarkRenderers.renderMarks);
+    renderMark.addAll(options?.renderMark?.renderMarks ?? Map<dynamic, TextStyle>());
 
     return Container(
       child: nodeListToWidget(
@@ -97,24 +85,9 @@ class ContentfulRichText {
     );
   }
 
-  Widget nodeListToWidget(
-    List<dynamic> nodes, {
-    Map<dynamic, Function> renderNode,
-    Map<dynamic, Function> renderMark,
-    bool isParagraph = false,
-  }) {
+  Widget nodeListToWidget(List<dynamic> nodes,
+      {Map<dynamic, Function> renderNode, Map<dynamic, TextStyle> renderMark}) {
     print('nodeListToWidget ${nodes.length}');
-    if (isParagraph) {
-      return RichText(
-        text: TextSpan(
-          children: List<TextSpan>.from(
-            nodes.map<TextSpan>(
-              (dynamic node) => _processTextNode(node, renderMark),
-            ),
-          ),
-        ),
-      );
-    }
     return Column(
       children: List<Widget>.from(
         nodes.map<Widget>((dynamic node) => nodeToWidget(
@@ -129,7 +102,7 @@ class ContentfulRichText {
   Widget nodeToWidget(
     dynamic node, {
     Map<dynamic, Function> renderNode,
-    Map<dynamic, Function> renderMark,
+    Map<dynamic, TextStyle> renderMark,
   }) {
     print('nodeToWidget entry $node');
     if (Helpers.isText(node)) {
@@ -156,27 +129,18 @@ class ContentfulRichText {
     }
   }
 
-  TextSpan _processTextNode(node, Map<dynamic, Function> renderMark) {
+  TextSpan _processTextNode(node, Map<dynamic, TextStyle> renderMark) {
     print('nodeToWidget text');
     TextNode textNode = TextNode(node);
     String nodeValue = HtmlUnescape().convert(textNode.value);
     if (textNode.marks != null && textNode.marks.length > 0) {
       print('TextNode has marks: ${textNode.value}, ${textNode.marks}');
-      List<TextSpan> _textSpans = List<TextSpan>();
-      textNode.marks.forEach((mark) {
-        // TODO: Currently prints the value once for each Mark instead
-        // of wrapping the marks around the value and applying all of them to
-        // the single content value
-        print('TextNode Mark: ${mark.type}');
-        if (mark.type != null) {
-          _textSpans.add(renderMark[mark.type](textNode.value));
-        }
-      });
+      TextStyle textStyle = _getMarksTextStyles(textNode.marks, renderMark);
       return TextSpan(
-        style: TextStyle(
+        text: nodeValue,
+        style: textStyle.apply(
           color: Colors.black,
         ),
-        children: _textSpans,
       );
     }
     print('TextNode no marks: ${textNode.value}');
@@ -189,6 +153,19 @@ class ContentfulRichText {
           ),
         ),
       ],
+    );
+  }
+
+  TextStyle _getMarksTextStyles(List<Mark> marks, Map<dynamic, TextStyle> renderMark) {
+    Map<String, TextStyle> textStyles = {};
+    marks.forEach((Mark mark) {
+      print('${mark.type}, ${renderMark[mark.type]}');
+      textStyles.putIfAbsent(mark.type, () => renderMark[mark.type]);
+    });
+    return TextStyle(
+      fontWeight: textStyles['bold']?.fontWeight,
+      fontStyle: textStyles['italic']?.fontStyle,
+      decoration: textStyles['underline']?.decoration,
     );
   }
 
