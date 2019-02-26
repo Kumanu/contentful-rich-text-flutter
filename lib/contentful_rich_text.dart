@@ -108,7 +108,6 @@ class ContentfulRichText {
     if (Helpers.isText(node)) {
       return RichText(text: _processTextNode(node, renderMark));
     } else if (Helpers.isParagraph(node)) {
-      print('we have a paragraph');
       return renderNode[node['nodeType']](
         node,
         (nodes) => List<TextSpan>.from(nodes.map((node) => _processTextNode(node, renderMark))),
@@ -139,6 +138,7 @@ class ContentfulRichText {
       return TextSpan(
         text: nodeValue,
         style: textStyle.apply(
+          // TODO: remove color styles after defaults are figured out
           color: Colors.black,
         ),
       );

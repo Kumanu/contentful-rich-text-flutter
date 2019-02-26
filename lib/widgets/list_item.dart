@@ -45,10 +45,23 @@ class ListItem extends StatelessWidget {
               width: indent ?? 24.0,
               child: Padding(
                 padding: const EdgeInsets.only(right: 6.0),
-                child: Bullet(),
+                child: Bullet(
+                  style: TextStyle(
+                    // TODO: remove color styles after defaults are figured out
+                    color: Colors.black,
+                  ),
+                ),
               ),
             ),
-            new Expanded(child: Text(text)),
+            new Expanded(
+              child: Text(
+                text,
+                style: TextStyle(
+                  // TODO: remove color styles after defaults are figured out
+                  color: Colors.black,
+                ),
+              ),
+            ),
           ],
         );
       case LI_TYPE.ORDERED:
@@ -58,11 +71,25 @@ class ListItem extends StatelessWidget {
             new SizedBox(
               width: indent ?? 24.0,
               child: Padding(
-                padding: const EdgeInsets.only(right: 6.0),
-                child: Text('$index$punctuation'),
+                padding: const EdgeInsets.only(right: 3.0, left: 6.0),
+                child: Text(
+                  '$index$punctuation',
+                  style: TextStyle(
+                    // TODO: remove color styles after defaults are figured out
+                    color: Colors.black,
+                  ),
+                ),
               ),
             ),
-            new Expanded(child: Text(text)),
+            new Expanded(
+              child: Text(
+                text,
+                style: TextStyle(
+                  // TODO: remove color styles after defaults are figured out
+                  color: Colors.black,
+                ),
+              ),
+            ),
           ],
         );
     }
