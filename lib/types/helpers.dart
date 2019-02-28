@@ -24,6 +24,12 @@ class Helpers {
     return node['nodeType'] == 'paragraph';
   }
 
+  /// Checks if the node is a Header
+  static bool isHeader(dynamic node) {
+    print('isHeader: ${node['nodeType']}');
+    return node['nodeType'].contains('heading');
+  }
+
   /// Checks if the node is an instance of Text
   static bool isText(dynamic node) {
     print('isText: ${node['nodeType']}');

@@ -6,8 +6,10 @@ import 'package:contentful_rich_text/types/inlines.dart';
 import 'package:contentful_rich_text/types/marks.dart';
 import 'package:contentful_rich_text/types/types.dart';
 import 'package:contentful_rich_text/widgets/heading.dart';
+import 'package:contentful_rich_text/widgets/hr.dart';
 import 'package:contentful_rich_text/widgets/list_item.dart';
 import 'package:contentful_rich_text/widgets/ordered_list.dart';
+import 'package:contentful_rich_text/widgets/paragraph.dart';
 import 'package:contentful_rich_text/widgets/unordered_list.dart';
 import 'package:flutter/material.dart';
 import 'package:html_unescape/html_unescape_small.dart';
@@ -15,33 +17,53 @@ import 'package:html_unescape/html_unescape_small.dart';
 /// Contentful Rich Text widget
 class ContentfulRichText {
   RenderNode defaultNodeRenderers = RenderNode({
-    BLOCKS.PARAGRAPH.value: (node, next) => RichText(
-          text: TextSpan(
-            children: next(node['content']),
-          ),
+    BLOCKS.PARAGRAPH.value: (node, next) => Paragraph(node, next),
+    BLOCKS.HEADING_1.value: (node, next) => Heading(
+          level: BLOCKS.HEADING_1,
+          text: node['value'],
+          content: node['content'],
+          next: next,
         ),
-    BLOCKS.HEADING_1.value: (node, next) =>
-        Heading(level: BLOCKS.HEADING_1, text: node['value'], content: node['content']),
-    BLOCKS.HEADING_2.value: (node, next) =>
-        Heading(level: BLOCKS.HEADING_2, text: node['value'], content: node['content']),
-    BLOCKS.HEADING_3.value: (node, next) =>
-        Heading(level: BLOCKS.HEADING_3, text: node['value'], content: node['content']),
-    BLOCKS.HEADING_4.value: (node, next) =>
-        Heading(level: BLOCKS.HEADING_4, text: node['value'], content: node['content']),
-    BLOCKS.HEADING_5.value: (node, next) =>
-        Heading(level: BLOCKS.HEADING_5, text: node['value'], content: node['content']),
-    BLOCKS.HEADING_6.value: (node, next) =>
-        Heading(level: BLOCKS.HEADING_6, text: node['value'], content: node['content']),
+    BLOCKS.HEADING_2.value: (node, next) => Heading(
+          level: BLOCKS.HEADING_2,
+          text: node['value'],
+          content: node['content'],
+          next: next,
+        ),
+    BLOCKS.HEADING_3.value: (node, next) => Heading(
+          level: BLOCKS.HEADING_3,
+          text: node['value'],
+          content: node['content'],
+          next: next,
+        ),
+    BLOCKS.HEADING_4.value: (node, next) => Heading(
+          level: BLOCKS.HEADING_4,
+          text: node['value'],
+          content: node['content'],
+          next: next,
+        ),
+    BLOCKS.HEADING_5.value: (node, next) => Heading(
+          level: BLOCKS.HEADING_5,
+          text: node['value'],
+          content: node['content'],
+          next: next,
+        ),
+    BLOCKS.HEADING_6.value: (node, next) => Heading(
+          level: BLOCKS.HEADING_6,
+          text: node['value'],
+          content: node['content'],
+          next: next,
+        ),
     BLOCKS.EMBEDDED_ENTRY.value: (node, next) => Container(), // TODO: implement
-    BLOCKS.UL_LIST.value: (node, next) => UnorderedList(node['content']),
-    BLOCKS.OL_LIST.value: (node, next) => OrderedList(node['content']),
+    BLOCKS.UL_LIST.value: (node, next) => UnorderedList(node['content'], next),
+    BLOCKS.OL_LIST.value: (node, next) => OrderedList(node['content'], next),
     BLOCKS.LIST_ITEM.value: (node, next) => ListItem(
           text: node.value,
-          // TODO: not sure we can use nodeType to determine the type of LIST_ITEM
           type: node.nodeType == BLOCKS.OL_LIST.value ? LI_TYPE.ORDERED : LI_TYPE.UNORDERED,
+          children: node['content'],
         ),
     BLOCKS.QUOTE.value: (node, next) => Container(), // TODO: implement
-    BLOCKS.HR.value: (node, next) => Container(), // TODO: implement
+    BLOCKS.HR.value: (node, next) => Hr(),
     INLINES.ASSET_HYPERLINK.value: (node, next) => defaultInline(INLINES.ASSET_HYPERLINK, node as Inline),
     INLINES.ENTRY_HYPERLINK.value: (node, next) => defaultInline(INLINES.ENTRY_HYPERLINK, node as Inline),
     INLINES.EMBEDDED_ENTRY.value: (node, next) => defaultInline(INLINES.EMBEDDED_ENTRY, node as Inline),
@@ -87,15 +109,19 @@ class ContentfulRichText {
 
   Widget nodeListToWidget(List<dynamic> nodes,
       {Map<dynamic, Function> renderNode, Map<dynamic, TextStyle> renderMark}) {
-    print('nodeListToWidget ${nodes.length}');
+    print('nodeListToWidget ${nodes?.length}');
     return Column(
-      children: List<Widget>.from(
-        nodes.map<Widget>((dynamic node) => nodeToWidget(
-              node,
-              renderNode: renderNode,
-              renderMark: renderMark,
-            )),
-      ),
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: nodes != null
+          ? List<Widget>.from(
+              nodes.map<Widget>((dynamic node) => nodeToWidget(
+                    node,
+                    renderNode: renderNode,
+                    renderMark: renderMark,
+                  )),
+            )
+          : [],
     );
   }
 
@@ -105,9 +131,11 @@ class ContentfulRichText {
     Map<dynamic, TextStyle> renderMark,
   }) {
     print('nodeToWidget entry $node');
+    print('nodeToWidget nodeType ${node['nodeType']}');
     if (Helpers.isText(node)) {
       return RichText(text: _processTextNode(node, renderMark));
-    } else if (Helpers.isParagraph(node)) {
+    } else if (Helpers.isParagraph(node) || Helpers.isHeader(node)) {
+      print('isParagraph or Header: ${node['nodeType']}');
       return renderNode[node['nodeType']](
         node,
         (nodes) => List<TextSpan>.from(nodes.map((node) => _processTextNode(node, renderMark))),

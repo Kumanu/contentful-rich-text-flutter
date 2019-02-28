@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 
 abstract class Node<T> {
   T _nodeType;
-  Map<String, dynamic> data;
+  Map<dynamic, dynamic> data;
   T get nodeType => _nodeType;
 }
 
@@ -27,7 +27,8 @@ class Document extends Node<BLOCKS> {
   BLOCKS _nodeType = BLOCKS.DOCUMENT;
   List<dynamic> content;
 
-  Document({this.content, String nodeType, Map<String, dynamic> data}) {
+  Document({this.content, String nodeType, Map<dynamic, dynamic> data}) {
+    print(data);
     this._nodeType = BLOCKS.fromString(nodeType);
     this.data = data;
   }

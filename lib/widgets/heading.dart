@@ -1,4 +1,5 @@
 import 'package:contentful_rich_text/types/blocks.dart';
+import 'package:contentful_rich_text/types/types.dart';
 import 'package:flutter/material.dart';
 
 Map<BLOCKS, double> _defaultHeadingSizes = {
@@ -13,25 +14,30 @@ Map<BLOCKS, double> _defaultHeadingSizes = {
 class Heading extends StatelessWidget {
   final BLOCKS level;
   final String text;
-  final List<TextSpan> content;
+  final List<Map<String, dynamic>> content;
   final FontWeight fontWeight;
+  final Next next;
 
   Heading({
     @required this.text,
     this.level = BLOCKS.HEADING_1,
     this.content,
     this.fontWeight = FontWeight.bold,
+    this.next,
   });
 
   @override
   Widget build(BuildContext context) {
     return RichText(
+      textAlign: TextAlign.start,
       text: TextSpan(
-        text: text,
-        children: content,
+        text: text ?? '',
+        children: next(content),
         style: TextStyle(
           fontWeight: fontWeight,
           fontSize: _defaultHeadingSizes[level],
+          // TODO: remove color styles after defaults are figured out
+          color: Colors.black,
         ),
       ),
     );

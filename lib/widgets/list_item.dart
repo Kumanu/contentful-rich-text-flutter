@@ -9,29 +9,33 @@ class ListItem extends StatelessWidget {
   final String text;
   final String punctuation;
   final String index;
+  final List<Widget> children;
 
   ListItem({
     @required this.type,
     @required this.text,
-    this.indent,
     this.index,
+    this.indent,
     this.punctuation,
+    this.children,
   });
 
   ListItem.unordered({
     this.type = LI_TYPE.UNORDERED,
     @required this.text,
-    this.indent,
     this.index,
+    this.indent,
     this.punctuation,
+    this.children,
   });
 
   ListItem.ordered({
     this.type = LI_TYPE.ORDERED,
     @required this.text,
     @required this.index,
-    this.punctuation = '.',
     this.indent,
+    this.punctuation = '.',
+    this.children,
   });
 
   @override
@@ -39,56 +43,77 @@ class ListItem extends StatelessWidget {
     switch (type) {
       case LI_TYPE.UNORDERED:
         return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            new SizedBox(
+            SizedBox(
               width: indent ?? 24.0,
               child: Padding(
-                padding: const EdgeInsets.only(right: 6.0),
+                padding: const EdgeInsets.only(top: 2.0, right: 1.0, left: 8.0),
                 child: Bullet(
                   style: TextStyle(
                     // TODO: remove color styles after defaults are figured out
                     color: Colors.black,
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
             ),
-            new Expanded(
-              child: Text(
-                text,
-                style: TextStyle(
-                  // TODO: remove color styles after defaults are figured out
-                  color: Colors.black,
-                ),
-              ),
+            Expanded(
+              child: text != null
+                  ? Padding(
+                      padding: const EdgeInsets.only(top: 14.0),
+                      child: Text(
+                        text,
+                        style: TextStyle(
+                          // TODO: remove color styles after defaults are figured out
+                          color: Colors.black,
+                        ),
+                      ),
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: this.children ?? [],
+                    ),
             ),
           ],
         );
       case LI_TYPE.ORDERED:
         return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            new SizedBox(
+            SizedBox(
               width: indent ?? 24.0,
               child: Padding(
-                padding: const EdgeInsets.only(right: 3.0, left: 6.0),
+                padding: const EdgeInsets.only(right: 2.0, left: 7.0),
                 child: Text(
                   '$index$punctuation',
                   style: TextStyle(
                     // TODO: remove color styles after defaults are figured out
                     color: Colors.black,
+                    fontSize: 14.0,
                   ),
                 ),
               ),
             ),
-            new Expanded(
-              child: Text(
-                text,
-                style: TextStyle(
-                  // TODO: remove color styles after defaults are figured out
-                  color: Colors.black,
-                ),
-              ),
+            Expanded(
+              child: text != null
+                  ? Padding(
+                      padding: const EdgeInsets.only(top: 14.0),
+                      child: Text(
+                        text,
+                        style: TextStyle(
+                          // TODO: remove color styles after defaults are figured out
+                          color: Colors.black,
+                        ),
+                      ),
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: this.children ?? [],
+                    ),
             ),
           ],
         );

@@ -1,11 +1,13 @@
+import 'package:contentful_rich_text/types/types.dart';
 import 'package:contentful_rich_text/widgets/list_item.dart';
 import 'package:flutter/material.dart';
 
 class UnorderedList extends StatelessWidget {
   final double indent;
-  final List<Map<String, String>> children;
+  final List<Map<String, dynamic>> children;
+  final Next next;
 
-  UnorderedList(this.children, {this.indent});
+  UnorderedList(this.children, this.next, {this.indent});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +15,12 @@ class UnorderedList extends StatelessWidget {
     List<Widget> listItems = [];
     children.forEach((child) {
       print(child);
-      listItems.add(ListItem.unordered(text: child['value']));
+      listItems.add(
+        ListItem.unordered(
+          text: child['value'],
+          children: <Widget>[next(child['content'])], // TODO: Implement nested lists
+        ),
+      );
     });
     return Column(
       children: listItems,
