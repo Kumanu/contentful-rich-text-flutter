@@ -1,6 +1,6 @@
 # Contentful Rich Text Renderer for Flutter
 
-Rich Text renderer that parses Contentful Ric
+Rich Text renderer that parses Contentful Rich Text field JSON output and produces a Flutter Widget tree that can be displayed in a Flutter app.
 
 ## Installation
 

@@ -15,4 +15,16 @@ class MARKS {
 
   static List<String> get keys => ['BOLD', 'ITALIC', 'UNDERLINE'];
   static List<String> get values => ['bold', 'italic', 'underline'];
+  static fromString(String value) {
+    switch (value) {
+      case 'bold':
+        return BOLD;
+      case 'italic':
+        return ITALIC;
+      case 'underline':
+        return UNDERLINE;
+      default:
+        return null;
+    }
+  }
 }

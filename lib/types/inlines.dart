@@ -16,4 +16,18 @@ class INLINES {
 
   static List<String> get keys => ['HYPERLINK', 'ENTRY_HYPERLINK', 'ASSET_HYPERLINK', 'EMBEDDED_ENTRY'];
   static List<String> get values => ['hyperlink', 'entry-hyperlink', 'asset-hyperlink', 'embedded-entry-inline'];
+  static fromString(String value) {
+    switch (value) {
+      case 'hyperlink':
+        return HYPERLINK;
+      case 'entry-hyperlink':
+        return ENTRY_HYPERLINK;
+      case 'asset-hyperlink':
+        return ASSET_HYPERLINK;
+      case 'embedded-entry-inline':
+        return EMBEDDED_ENTRY;
+      default:
+        return null;
+    }
+  }
 }
