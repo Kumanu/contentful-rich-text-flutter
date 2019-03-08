@@ -8,26 +8,27 @@ class INLINES {
   String toString() => 'INLINES.$_key';
   String get key => _key;
   String get value => _value;
+  operator [](dynamic index) => index is int
+      ? items[index]
+      : index is String ? items.firstWhere((item) => item.key == index, orElse: () => null) : null;
 
   static const HYPERLINK = const INLINES._internal('HYPERLINK', 'hyperlink');
   static const ENTRY_HYPERLINK = const INLINES._internal('ENTRY_HYPERLINK', 'entry-hyperlink');
   static const ASSET_HYPERLINK = const INLINES._internal('ASSET_HYPERLINK', 'asset-hyperlink');
   static const EMBEDDED_ENTRY = const INLINES._internal('EMBEDDED_ENTRY', 'embedded-entry-inline');
 
-  static List<String> get keys => ['HYPERLINK', 'ENTRY_HYPERLINK', 'ASSET_HYPERLINK', 'EMBEDDED_ENTRY'];
-  static List<String> get values => ['hyperlink', 'entry-hyperlink', 'asset-hyperlink', 'embedded-entry-inline'];
-  static fromString(String value) {
-    switch (value) {
-      case 'hyperlink':
-        return HYPERLINK;
-      case 'entry-hyperlink':
-        return ENTRY_HYPERLINK;
-      case 'asset-hyperlink':
-        return ASSET_HYPERLINK;
-      case 'embedded-entry-inline':
-        return EMBEDDED_ENTRY;
-      default:
-        return null;
-    }
+  // Helpers
+  static List<INLINES> get items => [
+        HYPERLINK,
+        ENTRY_HYPERLINK,
+        ASSET_HYPERLINK,
+        EMBEDDED_ENTRY,
+      ];
+  static fromKey(String key) {
+    return items.firstWhere((item) => item.key == key, orElse: () => null);
+  }
+
+  static fromValue(String value) {
+    return items.firstWhere((item) => item.value == value, orElse: () => null);
   }
 }

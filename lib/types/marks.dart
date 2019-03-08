@@ -8,23 +8,25 @@ class MARKS {
   String toString() => 'MARKS.$_key';
   String get key => _key;
   String get value => _value;
+  operator [](dynamic index) => index is int
+      ? items[index]
+      : index is String ? items.firstWhere((item) => item.key == index, orElse: () => null) : null;
 
   static const BOLD = const MARKS._internal('BOLD', 'bold');
   static const ITALIC = const MARKS._internal('ITALIC', 'italic');
   static const UNDERLINE = const MARKS._internal('UNDERLINE', 'underline');
 
-  static List<String> get keys => ['BOLD', 'ITALIC', 'UNDERLINE'];
-  static List<String> get values => ['bold', 'italic', 'underline'];
-  static fromString(String value) {
-    switch (value) {
-      case 'bold':
-        return BOLD;
-      case 'italic':
-        return ITALIC;
-      case 'underline':
-        return UNDERLINE;
-      default:
-        return null;
-    }
+  // Helpers
+  static List<MARKS> get items => [
+        BOLD,
+        ITALIC,
+        UNDERLINE,
+      ];
+  static fromKey(String key) {
+    return items.firstWhere((item) => item.key == key, orElse: () => null);
+  }
+
+  static fromValue(String value) {
+    return items.firstWhere((item) => item.value == value, orElse: () => null);
   }
 }

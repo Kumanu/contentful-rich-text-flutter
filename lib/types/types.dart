@@ -28,8 +28,8 @@ class Document extends Node<BLOCKS> {
   List<dynamic> content;
 
   Document({this.content, String nodeType, Map<dynamic, dynamic> data}) {
-    print(data);
-    this._nodeType = BLOCKS.fromString(nodeType);
+//    print(data);
+    this._nodeType = BLOCKS.fromValue(nodeType);
     this.data = data;
   }
 

@@ -86,30 +86,30 @@ class ContentfulRichText {
   ContentfulRichText(this.richTextJson, {this.options});
 
   Widget get documentToWidgetTree {
-    if (richTextJson == null || richTextJson['content'] == null) {
-      return Container();
+//    print(richTextJson);
+    if (richTextJson != null && richTextJson['content'] != null) {
+      // parse richTextData to a Document from JSON form
+      richTextDocument = _parseRichTextJson();
+
+      Map<dynamic, Function> renderNode = Map.from(defaultNodeRenderers.renderNodes);
+      renderNode.addAll(options?.renderNode?.renderNodes ?? Map<dynamic, Function>());
+      Map<dynamic, TextStyle> renderMark = Map.from(defaultMarkRenderers.renderMarks);
+      renderMark.addAll(options?.renderMark?.renderMarks ?? Map<dynamic, TextStyle>());
+
+      return Container(
+        child: nodeListToWidget(
+          richTextDocument.content,
+          renderNode: renderNode,
+          renderMark: renderMark,
+        ),
+      );
     }
-
-    // parse richTextData to a Document from JSON form
-    richTextDocument = _parseRichTextJson();
-
-    Map<dynamic, Function> renderNode = Map.from(defaultNodeRenderers.renderNodes);
-    renderNode.addAll(options?.renderNode?.renderNodes ?? Map<dynamic, Function>());
-    Map<dynamic, TextStyle> renderMark = Map.from(defaultMarkRenderers.renderMarks);
-    renderMark.addAll(options?.renderMark?.renderMarks ?? Map<dynamic, TextStyle>());
-
-    return Container(
-      child: nodeListToWidget(
-        richTextDocument.content,
-        renderNode: renderNode,
-        renderMark: renderMark,
-      ),
-    );
+    return Container();
   }
 
   Widget nodeListToWidget(List<dynamic> nodes,
       {Map<dynamic, Function> renderNode, Map<dynamic, TextStyle> renderMark}) {
-    print('nodeListToWidget ${nodes?.length}');
+//    print('nodeListToWidget ${nodes?.length}');
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,25 +130,25 @@ class ContentfulRichText {
     Map<dynamic, Function> renderNode,
     Map<dynamic, TextStyle> renderMark,
   }) {
-    print('nodeToWidget entry $node');
-    print('nodeToWidget nodeType ${node['nodeType']}');
+//    print('nodeToWidget entry $node');
+//    print('nodeToWidget nodeType ${node['nodeType']}');
     if (Helpers.isText(node)) {
       return RichText(text: _processTextNode(node, renderMark));
     } else if (Helpers.isParagraph(node) || Helpers.isHeader(node)) {
-      print('isParagraph or Header: ${node['nodeType']}');
+//      print('isParagraph or Header: ${node['nodeType']}');
       return renderNode[node['nodeType']](
         node,
         (nodes) => List<TextSpan>.from(nodes.map((node) => _processTextNode(node, renderMark))),
       );
     } else {
-      print('nodeToWidget not text');
+//      print('nodeToWidget not text');
       Next nextNode = (nodes) => nodeListToWidget(
             nodes,
             renderNode: renderNode,
             renderMark: renderMark,
           );
       if (node['nodeType'] == null || renderNode[node['nodeType']] == null) {
-        print('unrecognized node: ${node['nodeType']}');
+//        print('unrecognized node: ${node['nodeType']}');
         // TODO: Figure what to return when passed an unrecognized node.
         return Container();
       }
@@ -157,11 +157,11 @@ class ContentfulRichText {
   }
 
   TextSpan _processTextNode(node, Map<dynamic, TextStyle> renderMark) {
-    print('nodeToWidget text');
+//    print('nodeToWidget text');
     TextNode textNode = TextNode(node);
     String nodeValue = HtmlUnescape().convert(textNode.value);
     if (textNode.marks != null && textNode.marks.length > 0) {
-      print('TextNode has marks: ${textNode.value}, ${textNode.marks}');
+//      print('TextNode has marks: ${textNode.value}, ${textNode.marks}');
       TextStyle textStyle = _getMarksTextStyles(textNode.marks, renderMark);
       return TextSpan(
         text: nodeValue,
@@ -171,7 +171,7 @@ class ContentfulRichText {
         ),
       );
     }
-    print('TextNode no marks: ${textNode.value}');
+//    print('TextNode no marks: ${textNode.value}');
     return TextSpan(
       children: <TextSpan>[
         TextSpan(
@@ -187,7 +187,7 @@ class ContentfulRichText {
   TextStyle _getMarksTextStyles(List<Mark> marks, Map<dynamic, TextStyle> renderMark) {
     Map<String, TextStyle> textStyles = {};
     marks.forEach((Mark mark) {
-      print('${mark.type}, ${renderMark[mark.type]}');
+//      print('${mark.type}, ${renderMark[mark.type]}');
       textStyles.putIfAbsent(mark.type, () => renderMark[mark.type]);
     });
     return TextStyle(

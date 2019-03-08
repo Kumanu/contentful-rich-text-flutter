@@ -9,6 +9,9 @@ class BLOCKS {
   String toString() => 'BLOCKS.$_key';
   String get key => _key;
   String get value => _value;
+  operator [](dynamic index) => index is int
+      ? items[index]
+      : index is String ? items.firstWhere((item) => item.key == index, orElse: () => null) : null;
 
   static const DOCUMENT = const BLOCKS._internal('DOCUMENT', 'document');
   static const PARAGRAPH = const BLOCKS._internal('PARAGRAPH', 'paragraph');
@@ -26,74 +29,29 @@ class BLOCKS {
   static const EMBEDDED_ENTRY = const BLOCKS._internal('EMBEDDED_ENTRY', 'embedded-entry-block');
   static const EMBEDDED_ASSET = const BLOCKS._internal('EMBEDDED_ASSET', 'embedded-asset-block');
 
-  static List<String> get keys => [
-        'DOCUMENT',
-        'PARAGRAPH',
-        'HEADING_1',
-        'HEADING_2',
-        'HEADING_3',
-        'HEADING_4',
-        'HEADING_5',
-        'HEADING_6',
-        'OL_LIST',
-        'UL_LIST',
-        'LIST_ITEM',
-        'HR',
-        'QUOTE',
-        'EMBEDDED_ENTRY',
-        'EMBEDDED_ASSET',
+  // Helpers
+  static List<BLOCKS> get items => [
+        DOCUMENT,
+        PARAGRAPH,
+        HEADING_1,
+        HEADING_2,
+        HEADING_3,
+        HEADING_4,
+        HEADING_5,
+        HEADING_6,
+        OL_LIST,
+        UL_LIST,
+        LIST_ITEM,
+        HR,
+        QUOTE,
+        EMBEDDED_ENTRY,
+        EMBEDDED_ASSET,
       ];
-  static List<String> get values => [
-        'document',
-        'paragraph',
-        'heading-1',
-        'heading-2',
-        'heading-3',
-        'heading-4',
-        'heading-5',
-        'heading-6',
-        'ordered-list',
-        'unordered-list',
-        'list-item',
-        'hr',
-        'blockquote',
-        'embedded-entry-block',
-        'embedded-asset-block',
-      ];
-  static fromString(String value) {
-    switch (value) {
-      case 'document':
-        return DOCUMENT;
-      case 'paragraph':
-        return PARAGRAPH;
-      case 'heading-1':
-        return HEADING_1;
-      case 'heading-2':
-        return HEADING_2;
-      case 'heading-3':
-        return HEADING_3;
-      case 'heading-4':
-        return HEADING_4;
-      case 'heading-5':
-        return HEADING_5;
-      case 'heading-6':
-        return HEADING_6;
-      case 'ordered-list':
-        return OL_LIST;
-      case 'unordered-list':
-        return UL_LIST;
-      case 'list-item':
-        return LIST_ITEM;
-      case 'hr':
-        return HR;
-      case 'blockquote':
-        return QUOTE;
-      case 'embedded-entry-block':
-        return EMBEDDED_ENTRY;
-      case 'embedded-asset-block':
-        return EMBEDDED_ASSET;
-      default:
-        return null;
-    }
+  static fromKey(String key) {
+    return items.firstWhere((item) => item.key == key, orElse: () => null);
+  }
+
+  static fromValue(String value) {
+    return items.firstWhere((item) => item.value == value, orElse: () => null);
   }
 }
