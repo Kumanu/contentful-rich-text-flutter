@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class UnorderedList extends StatelessWidget {
   final double indent;
-  final List<Map<String, dynamic>> children;
+  final List<dynamic> children;
   final Next next;
 
   UnorderedList(this.children, this.next, {this.indent});

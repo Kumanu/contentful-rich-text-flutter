@@ -81,10 +81,12 @@ class RenderMark<T> {
   RenderMark(this.renderMarks);
 }
 
-abstract class Options {
+class Options {
   /// Node renderers
   RenderNode renderNode;
 
   /// Mark renderers
   RenderMark renderMark;
+
+  Options({this.renderNode, this.renderMark});
 }

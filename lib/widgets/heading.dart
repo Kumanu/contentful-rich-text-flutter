@@ -14,7 +14,7 @@ Map<BLOCKS, double> _defaultHeadingSizes = {
 class Heading extends StatelessWidget {
   final BLOCKS level;
   final String text;
-  final List<Map<String, dynamic>> content;
+  final List<dynamic> content;
   final FontWeight fontWeight;
   final Next next;
 

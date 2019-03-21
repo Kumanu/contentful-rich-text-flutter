@@ -8,7 +8,7 @@ class OrderedList extends StatelessWidget {
   final Next next;
 
   /// index character, text for item
-  final List<Map<String, dynamic>> children;
+  final List<dynamic> children;
 
   OrderedList(this.children, this.next, {this.indent, this.punctuation = '.'});
 

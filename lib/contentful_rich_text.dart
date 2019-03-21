@@ -165,10 +165,7 @@ class ContentfulRichText {
       TextStyle textStyle = _getMarksTextStyles(textNode.marks, renderMark);
       return TextSpan(
         text: nodeValue,
-        style: textStyle.apply(
-          // TODO: remove color styles after defaults are figured out
-          color: Colors.black,
-        ),
+        style: textStyle,
       );
     }
 //    print('TextNode no marks: ${textNode.value}');
@@ -176,9 +173,6 @@ class ContentfulRichText {
       children: <TextSpan>[
         TextSpan(
           text: nodeValue,
-          style: TextStyle(
-            color: Colors.black,
-          ),
         ),
       ],
     );

@@ -47,12 +47,12 @@ class ListItem extends StatelessWidget {
           children: <Widget>[
             SizedBox(
               width: indent ?? 24.0,
+              height: 20.0,
               child: Padding(
-                padding: const EdgeInsets.only(top: 2.0, right: 1.0, left: 8.0),
+                padding: const EdgeInsets.only(right: 1.0, left: 8.0),
                 child: Bullet(
                   style: TextStyle(
                     // TODO: remove color styles after defaults are figured out
-                    color: Colors.black,
                     fontSize: 16.0,
                     fontWeight: FontWeight.bold,
                   ),
@@ -62,13 +62,9 @@ class ListItem extends StatelessWidget {
             Expanded(
               child: text != null
                   ? Padding(
-                      padding: const EdgeInsets.only(top: 14.0),
+                      padding: const EdgeInsets.only(top: 5.0),
                       child: Text(
                         text,
-                        style: TextStyle(
-                          // TODO: remove color styles after defaults are figured out
-                          color: Colors.black,
-                        ),
                       ),
                     )
                   : Column(
@@ -85,13 +81,12 @@ class ListItem extends StatelessWidget {
           children: <Widget>[
             SizedBox(
               width: indent ?? 24.0,
+              height: 20.0,
               child: Padding(
-                padding: const EdgeInsets.only(right: 2.0, left: 7.0),
+                padding: const EdgeInsets.only(left: 7.0),
                 child: Text(
                   '$index$punctuation',
                   style: TextStyle(
-                    // TODO: remove color styles after defaults are figured out
-                    color: Colors.black,
                     fontSize: 14.0,
                   ),
                 ),
@@ -100,13 +95,9 @@ class ListItem extends StatelessWidget {
             Expanded(
               child: text != null
                   ? Padding(
-                      padding: const EdgeInsets.only(top: 14.0),
+                      padding: const EdgeInsets.only(top: 5.0),
                       child: Text(
                         text,
-                        style: TextStyle(
-                          // TODO: remove color styles after defaults are figured out
-                          color: Colors.black,
-                        ),
                       ),
                     )
                   : Column(
