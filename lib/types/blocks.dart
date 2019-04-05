@@ -11,7 +11,9 @@ class BLOCKS {
   String get value => _value;
   operator [](dynamic index) => index is int
       ? items[index]
-      : index is String ? items.firstWhere((item) => item.key == index, orElse: () => null) : null;
+      : index is String
+          ? items.firstWhere((item) => item.key == index, orElse: () => null)
+          : null;
 
   static const DOCUMENT = const BLOCKS._internal('DOCUMENT', 'document');
   static const PARAGRAPH = const BLOCKS._internal('PARAGRAPH', 'paragraph');
@@ -26,8 +28,10 @@ class BLOCKS {
   static const LIST_ITEM = const BLOCKS._internal('LIST_ITEM', 'list-item');
   static const HR = const BLOCKS._internal('HR', 'hr');
   static const QUOTE = const BLOCKS._internal('QUOTE', 'blockquote');
-  static const EMBEDDED_ENTRY = const BLOCKS._internal('EMBEDDED_ENTRY', 'embedded-entry-block');
-  static const EMBEDDED_ASSET = const BLOCKS._internal('EMBEDDED_ASSET', 'embedded-asset-block');
+  static const EMBEDDED_ENTRY =
+      const BLOCKS._internal('EMBEDDED_ENTRY', 'embedded-entry-block');
+  static const EMBEDDED_ASSET =
+      const BLOCKS._internal('EMBEDDED_ASSET', 'embedded-asset-block');
 
   // Helpers
   static List<BLOCKS> get items => [

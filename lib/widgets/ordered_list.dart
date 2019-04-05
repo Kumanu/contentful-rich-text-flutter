@@ -21,7 +21,9 @@ class OrderedList extends StatelessWidget {
         ListItem.ordered(
           text: child['value'],
           index: (this.children.indexOf(child) + 1).toString(),
-          children: <Widget>[next(child['content'])], // TODO: Implement nested lists
+          children: <Widget>[
+            next(child['content'])
+          ], // TODO: Implement nested lists
         ),
       );
     });

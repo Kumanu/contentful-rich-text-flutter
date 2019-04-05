@@ -10,7 +10,9 @@ class MARKS {
   String get value => _value;
   operator [](dynamic index) => index is int
       ? items[index]
-      : index is String ? items.firstWhere((item) => item.key == index, orElse: () => null) : null;
+      : index is String
+          ? items.firstWhere((item) => item.key == index, orElse: () => null)
+          : null;
 
   static const BOLD = const MARKS._internal('BOLD', 'bold');
   static const ITALIC = const MARKS._internal('ITALIC', 'italic');

@@ -59,14 +59,19 @@ class ContentfulRichText {
     BLOCKS.OL_LIST.value: (node, next) => OrderedList(node['content'], next),
     BLOCKS.LIST_ITEM.value: (node, next) => ListItem(
           text: node.value,
-          type: node.nodeType == BLOCKS.OL_LIST.value ? LI_TYPE.ORDERED : LI_TYPE.UNORDERED,
+          type: node.nodeType == BLOCKS.OL_LIST.value
+              ? LI_TYPE.ORDERED
+              : LI_TYPE.UNORDERED,
           children: node['content'],
         ),
     BLOCKS.QUOTE.value: (node, next) => Container(), // TODO: implement
     BLOCKS.HR.value: (node, next) => Hr(),
-    INLINES.ASSET_HYPERLINK.value: (node, next) => defaultInline(INLINES.ASSET_HYPERLINK, node as Inline),
-    INLINES.ENTRY_HYPERLINK.value: (node, next) => defaultInline(INLINES.ENTRY_HYPERLINK, node as Inline),
-    INLINES.EMBEDDED_ENTRY.value: (node, next) => defaultInline(INLINES.EMBEDDED_ENTRY, node as Inline),
+    INLINES.ASSET_HYPERLINK.value: (node, next) =>
+        defaultInline(INLINES.ASSET_HYPERLINK, node as Inline),
+    INLINES.ENTRY_HYPERLINK.value: (node, next) =>
+        defaultInline(INLINES.ENTRY_HYPERLINK, node as Inline),
+    INLINES.EMBEDDED_ENTRY.value: (node, next) =>
+        defaultInline(INLINES.EMBEDDED_ENTRY, node as Inline),
     INLINES.HYPERLINK.value: (node, next) => Container(), // TODO: implement
   });
 
@@ -77,7 +82,8 @@ class ContentfulRichText {
     MARKS.UNDERLINE.value: TextStyle(decoration: TextDecoration.underline),
   });
 
-  static Widget defaultInline(INLINES type, Inline node) => Container(); // TODO: implement
+  static Widget defaultInline(INLINES type, Inline node) =>
+      Container(); // TODO: implement
 
   dynamic richTextJson;
   Options options;
@@ -91,10 +97,14 @@ class ContentfulRichText {
       // parse richTextData to a Document from JSON form
       richTextDocument = _parseRichTextJson();
 
-      Map<dynamic, Function> renderNode = Map.from(defaultNodeRenderers.renderNodes);
-      renderNode.addAll(options?.renderNode?.renderNodes ?? Map<dynamic, Function>());
-      Map<dynamic, TextStyle> renderMark = Map.from(defaultMarkRenderers.renderMarks);
-      renderMark.addAll(options?.renderMark?.renderMarks ?? Map<dynamic, TextStyle>());
+      Map<dynamic, Function> renderNode =
+          Map.from(defaultNodeRenderers.renderNodes);
+      renderNode
+          .addAll(options?.renderNode?.renderNodes ?? Map<dynamic, Function>());
+      Map<dynamic, TextStyle> renderMark =
+          Map.from(defaultMarkRenderers.renderMarks);
+      renderMark.addAll(
+          options?.renderMark?.renderMarks ?? Map<dynamic, TextStyle>());
 
       return Container(
         child: nodeListToWidget(
@@ -138,7 +148,8 @@ class ContentfulRichText {
 //      print('isParagraph or Header: ${node['nodeType']}');
       return renderNode[node['nodeType']](
         node,
-        (nodes) => List<TextSpan>.from(nodes.map((node) => _processTextNode(node, renderMark))),
+        (nodes) => List<TextSpan>.from(
+            nodes.map((node) => _processTextNode(node, renderMark))),
       );
     } else {
 //      print('nodeToWidget not text');
@@ -178,7 +189,8 @@ class ContentfulRichText {
     );
   }
 
-  TextStyle _getMarksTextStyles(List<Mark> marks, Map<dynamic, TextStyle> renderMark) {
+  TextStyle _getMarksTextStyles(
+      List<Mark> marks, Map<dynamic, TextStyle> renderMark) {
     Map<String, TextStyle> textStyles = {};
     marks.forEach((Mark mark) {
 //      print('${mark.type}, ${renderMark[mark.type]}');

@@ -10,12 +10,17 @@ class INLINES {
   String get value => _value;
   operator [](dynamic index) => index is int
       ? items[index]
-      : index is String ? items.firstWhere((item) => item.key == index, orElse: () => null) : null;
+      : index is String
+          ? items.firstWhere((item) => item.key == index, orElse: () => null)
+          : null;
 
   static const HYPERLINK = const INLINES._internal('HYPERLINK', 'hyperlink');
-  static const ENTRY_HYPERLINK = const INLINES._internal('ENTRY_HYPERLINK', 'entry-hyperlink');
-  static const ASSET_HYPERLINK = const INLINES._internal('ASSET_HYPERLINK', 'asset-hyperlink');
-  static const EMBEDDED_ENTRY = const INLINES._internal('EMBEDDED_ENTRY', 'embedded-entry-inline');
+  static const ENTRY_HYPERLINK =
+      const INLINES._internal('ENTRY_HYPERLINK', 'entry-hyperlink');
+  static const ASSET_HYPERLINK =
+      const INLINES._internal('ASSET_HYPERLINK', 'asset-hyperlink');
+  static const EMBEDDED_ENTRY =
+      const INLINES._internal('EMBEDDED_ENTRY', 'embedded-entry-inline');
 
   // Helpers
   static List<INLINES> get items => [

@@ -18,7 +18,9 @@ class UnorderedList extends StatelessWidget {
       listItems.add(
         ListItem.unordered(
           text: child['value'],
-          children: <Widget>[next(child['content'])], // TODO: Implement nested lists
+          children: <Widget>[
+            next(child['content'])
+          ], // TODO: Implement nested lists
         ),
       );
     });
