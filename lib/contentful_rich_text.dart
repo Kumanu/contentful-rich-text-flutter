@@ -180,13 +180,7 @@ class ContentfulRichText {
       );
     }
 //    print('TextNode no marks: ${textNode.value}');
-    return TextSpan(
-      children: <TextSpan>[
-        TextSpan(
-          text: nodeValue,
-        ),
-      ],
-    );
+    return TextSpan(text: nodeValue);
   }
 
   TextStyle _getMarksTextStyles(

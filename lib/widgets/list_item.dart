@@ -43,16 +43,15 @@ class ListItem extends StatelessWidget {
     switch (type) {
       case LI_TYPE.UNORDERED:
         return Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(
               width: indent ?? 24.0,
               height: 20.0,
               child: Padding(
-                padding: const EdgeInsets.only(right: 1.0, left: 8.0),
+                padding: EdgeInsets.only(right: 1.0, left: 8.0),
                 child: Bullet(
                   style: TextStyle(
-                    // TODO: remove color styles after defaults are figured out
                     fontSize: 16.0,
                     fontWeight: FontWeight.bold,
                   ),
@@ -62,10 +61,8 @@ class ListItem extends StatelessWidget {
             Expanded(
               child: text != null
                   ? Padding(
-                      padding: const EdgeInsets.only(top: 5.0),
-                      child: Text(
-                        text,
-                      ),
+                      padding: EdgeInsets.only(top: 5.0),
+                      child: Text(text),
                     )
                   : Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,28 +74,20 @@ class ListItem extends StatelessWidget {
         );
       case LI_TYPE.ORDERED:
         return Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(
               width: indent ?? 24.0,
-              height: 20.0,
               child: Padding(
-                padding: const EdgeInsets.only(left: 7.0),
-                child: Text(
-                  '$index$punctuation',
-                  style: TextStyle(
-                    fontSize: 14.0,
-                  ),
-                ),
+                padding: EdgeInsets.only(left: 7.0, top: 2.0),
+                child: Text('$index$punctuation'),
               ),
             ),
             Expanded(
               child: text != null
                   ? Padding(
-                      padding: const EdgeInsets.only(top: 5.0),
-                      child: Text(
-                        text,
-                      ),
+                      padding: EdgeInsets.only(top: 5.0),
+                      child: Text(text),
                     )
                   : Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
