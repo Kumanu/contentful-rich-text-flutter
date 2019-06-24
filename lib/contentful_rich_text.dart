@@ -140,26 +140,21 @@ class ContentfulRichText {
     Map<dynamic, Function> renderNode,
     Map<dynamic, TextStyle> renderMark,
   }) {
-//    print('nodeToWidget entry $node');
-//    print('nodeToWidget nodeType ${node['nodeType']}');
     if (Helpers.isText(node)) {
       return RichText(text: _processTextNode(node, renderMark));
     } else if (Helpers.isParagraph(node) || Helpers.isHeader(node)) {
-//      print('isParagraph or Header: ${node['nodeType']}');
       return renderNode[node['nodeType']](
         node,
         (nodes) => List<TextSpan>.from(
             nodes.map((node) => _processTextNode(node, renderMark))),
       );
     } else {
-//      print('nodeToWidget not text');
       Next nextNode = (nodes) => nodeListToWidget(
             nodes,
             renderNode: renderNode,
             renderMark: renderMark,
           );
       if (node['nodeType'] == null || renderNode[node['nodeType']] == null) {
-//        print('unrecognized node: ${node['nodeType']}');
         // TODO: Figure what to return when passed an unrecognized node.
         return Container();
       }

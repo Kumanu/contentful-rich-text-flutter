@@ -14,7 +14,6 @@ class OrderedList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-//    print('OrderedList Children: ${this.children}');
     List<Widget> listItems = [];
     children.forEach((child) {
       listItems.add(
