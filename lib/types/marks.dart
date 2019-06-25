@@ -57,6 +57,8 @@ class MARKS {
 
   static Map<dynamic, TextStyle> renderMarks(
           Map<dynamic, TextStyle> optionRenderMarks) =>
-      Map.from(MARKS.defaultMarkRenderers.renderMarks)
-        ..addAll(optionRenderMarks ?? Map<dynamic, TextStyle>());
+      optionRenderMarks == null
+          ? Map.from(MARKS.defaultMarkRenderers.renderMarks)
+          : (Map.from(MARKS.defaultMarkRenderers.renderMarks)
+            ..addAll(optionRenderMarks));
 }
