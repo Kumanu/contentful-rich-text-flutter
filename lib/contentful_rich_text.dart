@@ -159,21 +159,23 @@ class ContentfulRichText {
   }) {
     if (node['nodeType'] == 'hyperlink' || uri?.isNotEmpty == true) {
       // Note: Hyperlinks are nested in other blocs like Paragraphs/Headers
-      String _link = uri ?? node['data']['uri'];
-      String _nodeType = node['nodeType'];
+      String link = uri ?? node['data']['uri'];
+      String nodeType = node['nodeType'];
       if (uri?.isNotEmpty == true && node['nodeType'] == 'text') {
         // ensure Hyperlink is used for text blocks with uris
-        _nodeType = 'hyperlink';
+        nodeType = 'hyperlink';
         // pass uri for Hyperlink on text nodes for TapRecognizer
-        node['data'] = {'uri': _link};
+        node['data'] = {'uri': link};
       }
-      return singletonRenderers.renderNode[_nodeType](
+      return singletonRenderers.renderNode[nodeType](
         node,
         (nodes) => nodes
-            ?.map<TextSpan>((node) => _processInlineNode(
-                  node,
-                  uri: _link,
-                ) as TextSpan)
+            ?.map<TextSpan>(
+              (node) => _processInlineNode(
+                    node,
+                    uri: link,
+                  ) as TextSpan,
+            )
             ?.toList(),
       );
     }
