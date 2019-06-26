@@ -28,7 +28,6 @@ class Document extends Node<BLOCKS> {
   List<dynamic> content;
 
   Document({this.content, String nodeType, Map<dynamic, dynamic> data}) {
-//    print(data);
     this._nodeType = BLOCKS.fromValue(nodeType);
     this.data = data;
   }
@@ -68,8 +67,8 @@ class Mark {
 }
 
 // Helper types for Rich Text Rendering
-typedef Next = dynamic Function(List<dynamic> nodes);
-typedef NodeRenderer = Widget Function(dynamic node, Next next);
+typedef Next = dynamic Function(dynamic nodes);
+typedef NodeRenderer = dynamic Function(dynamic node, Next next);
 
 class RenderNode<T> {
   Map<T, NodeRenderer> renderNodes; // NodeRenderer not Function

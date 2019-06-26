@@ -1,5 +1,6 @@
 library contentful_rich_text;
 
+import 'package:contentful_rich_text/state/renderers.dart';
 import 'package:contentful_rich_text/types/blocks.dart';
 import 'package:contentful_rich_text/types/helpers.dart';
 import 'package:contentful_rich_text/types/inlines.dart';
@@ -7,6 +8,7 @@ import 'package:contentful_rich_text/types/marks.dart';
 import 'package:contentful_rich_text/types/types.dart';
 import 'package:contentful_rich_text/widgets/heading.dart';
 import 'package:contentful_rich_text/widgets/hr.dart';
+import 'package:contentful_rich_text/widgets/hyperlink.dart';
 import 'package:contentful_rich_text/widgets/list_item.dart';
 import 'package:contentful_rich_text/widgets/ordered_list.dart';
 import 'package:contentful_rich_text/widgets/paragraph.dart';
@@ -72,18 +74,11 @@ class ContentfulRichText {
         defaultInline(INLINES.ENTRY_HYPERLINK, node as Inline),
     INLINES.EMBEDDED_ENTRY.value: (node, next) =>
         defaultInline(INLINES.EMBEDDED_ENTRY, node as Inline),
-    INLINES.HYPERLINK.value: (node, next) => Container(), // TODO: implement
+    INLINES.HYPERLINK.value: (node, next) => Hyperlink(node, next),
   });
 
-  // Can only be used to apply styling, does not return a TextSpan
-  RenderMark defaultMarkRenderers = RenderMark({
-    MARKS.BOLD.value: TextStyle(fontWeight: FontWeight.bold),
-    MARKS.ITALIC.value: TextStyle(fontStyle: FontStyle.italic),
-    MARKS.UNDERLINE.value: TextStyle(decoration: TextDecoration.underline),
-  });
-
-  static Widget defaultInline(INLINES type, Inline node) =>
-      Container(); // TODO: implement
+  // TODO: implement
+  static Widget defaultInline(INLINES type, Inline node) => Container();
 
   dynamic richTextJson;
   Options options;
@@ -91,110 +86,112 @@ class ContentfulRichText {
 
   ContentfulRichText(this.richTextJson, {this.options});
 
+  /// This is the main entry point for ContentfulRichText. To render
+  /// Flutter widgets, in your app instantiate ContentfulRichText with
+  /// the JSON data, as well as any (optional) Renderer or Mark options,
+  /// and then get documentToWidgetTree:
+  /// ContentfulRichText(json, options: {...}).documentToWidgetTree
   Widget get documentToWidgetTree {
-//    print(richTextJson);
     if (richTextJson != null && richTextJson['content'] != null) {
       // parse richTextData to a Document from JSON form
       richTextDocument = _parseRichTextJson();
 
-      Map<dynamic, Function> renderNode =
-          Map.from(defaultNodeRenderers.renderNodes);
-      renderNode
-          .addAll(options?.renderNode?.renderNodes ?? Map<dynamic, Function>());
-      Map<dynamic, TextStyle> renderMark =
-          Map.from(defaultMarkRenderers.renderMarks);
-      renderMark.addAll(
-          options?.renderMark?.renderMarks ?? Map<dynamic, TextStyle>());
+      singletonRenderers.renderNode = Map.from(
+        defaultNodeRenderers.renderNodes,
+      );
+      if (options?.renderNode?.renderNodes != null) {
+        singletonRenderers.renderNode.addAll(options.renderNode.renderNodes);
+      }
+      singletonRenderers.renderMark = MARKS.renderMarks(
+        options?.renderMark?.renderMarks,
+      );
 
       return Container(
-        child: nodeListToWidget(
-          richTextDocument.content,
-          renderNode: renderNode,
-          renderMark: renderMark,
-        ),
+        child: nodeListToWidget(richTextDocument.content),
       );
     }
     return Container();
   }
 
-  Widget nodeListToWidget(List<dynamic> nodes,
-      {Map<dynamic, Function> renderNode, Map<dynamic, TextStyle> renderMark}) {
-//    print('nodeListToWidget ${nodes?.length}');
+  /// nodeListToWidget renders the Widget tree from the data nodes
+  Widget nodeListToWidget(List<dynamic> nodes) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: nodes != null
-          ? List<Widget>.from(
-              nodes.map<Widget>((dynamic node) => nodeToWidget(
-                    node,
-                    renderNode: renderNode,
-                    renderMark: renderMark,
-                  )),
-            )
-          : [],
+      children: List<Widget>.from(
+        nodes?.map<Widget>((node) => nodeToWidget(node)) ?? [],
+      ),
     );
   }
 
-  Widget nodeToWidget(
-    dynamic node, {
-    Map<dynamic, Function> renderNode,
-    Map<dynamic, TextStyle> renderMark,
-  }) {
-//    print('nodeToWidget entry $node');
-//    print('nodeToWidget nodeType ${node['nodeType']}');
+  /// nodeToWidget handles converting a node into a Widget, as well as handling
+  /// any custom logic needed to accommodate different node types
+  Widget nodeToWidget(dynamic node) {
     if (Helpers.isText(node)) {
-      return RichText(text: _processTextNode(node, renderMark));
+      return RichText(text: _processInlineNode(node));
     } else if (Helpers.isParagraph(node) || Helpers.isHeader(node)) {
-//      print('isParagraph or Header: ${node['nodeType']}');
-      return renderNode[node['nodeType']](
+      // TODO: Headers don't appear to set their size properly
+      return singletonRenderers.renderNode[node['nodeType']](
         node,
         (nodes) => List<TextSpan>.from(
-            nodes.map((node) => _processTextNode(node, renderMark))),
+              nodes.map(
+                (node) => _processInlineNode(node),
+              ),
+            ),
       );
     } else {
-//      print('nodeToWidget not text');
-      Next nextNode = (nodes) => nodeListToWidget(
-            nodes,
-            renderNode: renderNode,
-            renderMark: renderMark,
-          );
-      if (node['nodeType'] == null || renderNode[node['nodeType']] == null) {
-//        print('unrecognized node: ${node['nodeType']}');
+      Next nextNode = (nodes) => nodeListToWidget(nodes);
+      if (node['nodeType'] == null ||
+          singletonRenderers.renderNode[node['nodeType']] == null) {
         // TODO: Figure what to return when passed an unrecognized node.
         return Container();
       }
-      return renderNode[node['nodeType']](node, nextNode);
+      return singletonRenderers.renderNode[node['nodeType']](node, nextNode);
     }
   }
 
-  TextSpan _processTextNode(node, Map<dynamic, TextStyle> renderMark) {
-//    print('nodeToWidget text');
-    TextNode textNode = TextNode(node);
-    String nodeValue = HtmlUnescape().convert(textNode.value);
-    if (textNode.marks != null && textNode.marks.length > 0) {
-//      print('TextNode has marks: ${textNode.value}, ${textNode.marks}');
-      TextStyle textStyle = _getMarksTextStyles(textNode.marks, renderMark);
-      return TextSpan(
-        text: nodeValue,
-        style: textStyle,
+  /// _processInlineNode handle converting nodes into (potentially
+  /// nested) TextSpans, typically coming from Paragraph, Heading and
+  /// Hyperlink nodes
+  dynamic _processInlineNode(
+    node, {
+    String uri,
+  }) {
+    if (node['nodeType'] == 'hyperlink' || uri?.isNotEmpty == true) {
+      // Note: Hyperlinks are nested in other blocs like Paragraphs/Headers
+      String link = uri ?? node['data']['uri'];
+      String nodeType = node['nodeType'];
+      if (uri?.isNotEmpty == true && node['nodeType'] == 'text') {
+        // ensure Hyperlink is used for text blocks with uris
+        nodeType = 'hyperlink';
+        // pass uri for Hyperlink on text nodes for TapRecognizer
+        node['data'] = {'uri': link};
+      }
+      return singletonRenderers.renderNode[nodeType](
+        node,
+        (nodes) => nodes
+            ?.map<TextSpan>(
+              (node) => _processInlineNode(
+                    node,
+                    uri: link,
+                  ) as TextSpan,
+            )
+            ?.toList(),
       );
     }
-//    print('TextNode no marks: ${textNode.value}');
+    // If not a hyperlink, process as text node
+    TextNode textNode = TextNode(node);
+    String nodeValue = HtmlUnescape().convert(textNode.value);
+    if (textNode.marks?.isNotEmpty == true) {
+      return TextSpan(
+        text: nodeValue,
+        style: MARKS.getMarksTextStyles(
+          textNode.marks,
+          singletonRenderers.renderMark,
+        ),
+      );
+    }
     return TextSpan(text: nodeValue);
-  }
-
-  TextStyle _getMarksTextStyles(
-      List<Mark> marks, Map<dynamic, TextStyle> renderMark) {
-    Map<String, TextStyle> textStyles = {};
-    marks.forEach((Mark mark) {
-//      print('${mark.type}, ${renderMark[mark.type]}');
-      textStyles.putIfAbsent(mark.type, () => renderMark[mark.type]);
-    });
-    return TextStyle(
-      fontWeight: textStyles['bold']?.fontWeight,
-      fontStyle: textStyles['italic']?.fontStyle,
-      decoration: textStyles['underline']?.decoration,
-    );
   }
 
   Document _parseRichTextJson() {

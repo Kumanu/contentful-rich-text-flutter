@@ -20,19 +20,21 @@ class Helpers {
 
   /// Checks if the node is an instance of Paragraph
   static bool isParagraph(dynamic node) {
-//    print('isParagraph: ${node['nodeType']}');
     return node['nodeType'] == 'paragraph';
   }
 
   /// Checks if the node is a Header
   static bool isHeader(dynamic node) {
-//    print('isHeader: ${node['nodeType']}');
     return node['nodeType'].contains('heading');
   }
 
   /// Checks if the node is an instance of Text
   static bool isText(dynamic node) {
-//    print('isText: ${node['nodeType']}');
     return node['nodeType'] == 'text';
+  }
+
+  /// Checks if the node is an instance of Hyperlink
+  static bool isHyperlink(dynamic node) {
+    return node['nodeType'] == 'hyperlink';
   }
 }

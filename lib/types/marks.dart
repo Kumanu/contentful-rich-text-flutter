@@ -1,3 +1,6 @@
+import 'package:contentful_rich_text/types/types.dart';
+import 'package:flutter/material.dart';
+
 /// Map of all Contentful marks
 class MARKS {
   final String _key;
@@ -31,4 +34,31 @@ class MARKS {
   static fromValue(String value) {
     return items.firstWhere((item) => item.value == value, orElse: () => null);
   }
+
+  // Can only be used to apply styling, does not return a TextSpan
+  static RenderMark defaultMarkRenderers = RenderMark({
+    MARKS.BOLD.value: TextStyle(fontWeight: FontWeight.bold),
+    MARKS.ITALIC.value: TextStyle(fontStyle: FontStyle.italic),
+    MARKS.UNDERLINE.value: TextStyle(decoration: TextDecoration.underline),
+  });
+
+  static TextStyle getMarksTextStyles(
+      List<Mark> marks, Map<dynamic, TextStyle> renderMark) {
+    Map<String, TextStyle> textStyles = {};
+    marks.forEach((Mark mark) {
+      textStyles.putIfAbsent(mark.type, () => renderMark[mark.type]);
+    });
+    return TextStyle(
+      fontWeight: textStyles['bold']?.fontWeight,
+      fontStyle: textStyles['italic']?.fontStyle,
+      decoration: textStyles['underline']?.decoration,
+    );
+  }
+
+  static Map<dynamic, TextStyle> renderMarks(
+          Map<dynamic, TextStyle> optionRenderMarks) =>
+      optionRenderMarks == null
+          ? Map.from(MARKS.defaultMarkRenderers.renderMarks)
+          : (Map.from(MARKS.defaultMarkRenderers.renderMarks)
+            ..addAll(optionRenderMarks));
 }
