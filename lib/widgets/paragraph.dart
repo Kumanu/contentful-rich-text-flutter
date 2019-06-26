@@ -9,9 +9,13 @@ class Paragraph extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RichText(
-      text: TextSpan(
-        children: next(node['content']),
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(
+            children: next(node['content']),
+          ),
+        ],
       ),
     );
   }

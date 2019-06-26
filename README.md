@@ -43,7 +43,9 @@ class Demo extends StatelessWidget {
   Widget build(BuildContext context) {
     return ContentfulRichText(document).documentToWidgetTree;
     // Example widget tree produced:
-    // RichText(text: 'Hello World');
+    // Paragraph(
+    //   Text(text: 'Hello World'),
+    // );
   }
 }
 ```
@@ -86,12 +88,14 @@ class Demo extends StatelessWidget {
   Widget build(BuildContext context) {
     return ContentfulRichText(document).documentToWidgetTree;
     // Example widget tree produced:
-    // RichText(
-    //   text: '',
-    //   children: <Widgets>[
-    //     TextSpan(text: 'Hello', style: { fontWeight: FontWeight.bold }),
-    //     TextSpan(text: ' world!', style: { fontStyle: FontStyle.italic }), 
-    //   ],
+    // Paragraph(
+    //   Text(
+    //     text: '',
+    //     children: <Widgets>[
+    //       TextSpan(text: 'Hello', style: { fontWeight: FontWeight.bold }),
+    //       TextSpan(text: ' world!', style: { fontStyle: FontStyle.italic }), 
+    //     ],
+    //   ),
     // );
   }
 }
@@ -182,8 +186,8 @@ The `renderNode` keys should be the `value` of one of the following `BLOCKS` and
   - ~~`EMBEDDED_ASSET`~~ // not implemented yet
 
 - `INLINES`
-  - `EMBEDDED_ENTRY` (this is different from the `BLOCKS.EMBEDDED_ENTRY`) // not implemented yet
-  - `HYPERLINK` // not implemented yet
+  - `HYPERLINK`
+  - ~~`EMBEDDED_ENTRY`~~ (this is different from the `BLOCKS.EMBEDDED_ENTRY`) // not implemented yet
   - ~~`ENTRY_HYPERLINK`~~ // not implemented yet
   - ~~`ASSET_HYPERLINK`~~ // not implemented yet
 

@@ -28,18 +28,20 @@ class Heading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RichText(
-      textAlign: TextAlign.start,
-      text: TextSpan(
-        text: text ?? '',
-        children: next(content),
-        style: TextStyle(
-          fontWeight: fontWeight,
-          fontSize: _defaultHeadingSizes[level],
-          // TODO: remove color styles after defaults are figured out
-          color: Colors.black,
-        ),
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(
+            text: text ?? '',
+            children: next(content),
+            style: TextStyle(
+              fontWeight: fontWeight,
+              fontSize: _defaultHeadingSizes[level],
+            ),
+          ),
+        ],
       ),
+      textAlign: TextAlign.start,
     );
   }
 }

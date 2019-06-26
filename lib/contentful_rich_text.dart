@@ -128,7 +128,7 @@ class ContentfulRichText {
   /// any custom logic needed to accommodate different node types
   Widget nodeToWidget(dynamic node) {
     if (Helpers.isText(node)) {
-      return RichText(text: _processInlineNode(node));
+      return Text.rich(TextSpan(text: _processInlineNode(node)));
     } else if (Helpers.isParagraph(node) || Helpers.isHeader(node)) {
       // TODO: Headers don't appear to set their size properly
       return singletonRenderers.renderNode[node['nodeType']](
