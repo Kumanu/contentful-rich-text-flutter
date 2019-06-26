@@ -1,3 +1,10 @@
+## [0.1.1] - 06/25/2019
+* Update Changelog
+
+## [0.1.0] - 06/25/2019
+* Replace RichText with Text.rich to fix default styling issues
+* Code cleanup
+
 ## [0.0.4] - 06/25/2019
 * Add Hyperlink support
 * Code cleanup, refactoring
