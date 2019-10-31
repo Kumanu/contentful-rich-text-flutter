@@ -1,7 +1,6 @@
 import 'package:contentful_rich_text/contentful_rich_text.dart';
+import 'package:example/contentful_data.dart';
 import 'package:flutter/material.dart';
-
-import './contentful_data.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,39 +11,28 @@ class MyApp extends StatelessWidget {
       title: 'Contentful Rich Text Parser Demo',
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Contentful Rich Text Parser Demo'),
+          title: const Text('Contentful Rich Text Parser Demo'),
         ),
-        body: SingleChildScrollView(
-          child: DefaultTextStyle(
-            style: TextStyle(
-              color: Colors.black,
-            ),
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    ContentfulRichText(ContentfulData.jsonData)
-                        .documentToWidgetTree,
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20.0),
-                      child: Divider(
-                        color: Colors.black54,
-                      ),
-                    ),
-                    Text.rich(
-                      TextSpan(children: [
-                        TextSpan(
-                          text: 'JSON Data:',
-                        )
-                      ]),
-                    ),
-                    Text(ContentfulData.stringData),
-                  ],
+        body: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Flexible(
+                flex: 1,
+                child: ContentfulRichText(
+                  ContentfulData.jsonData,
+                ).documentToWidgetTree,
+              ),
+              const Divider(height: 2),
+              const Text('JSON Data:'),
+              const Flexible(
+                flex: 6,
+                child: SingleChildScrollView(
+                  child: Text(ContentfulData.stringData),
                 ),
               ),
-            ),
+            ],
           ),
         ),
       ),

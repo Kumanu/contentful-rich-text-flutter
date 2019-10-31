@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 class ContentfulData {
-  static Map<String, dynamic> get jsonData => json.decode(stringData);
-  static String get stringData => '''{
+  static final Map<String, dynamic> jsonData = json.decode(stringData);
+  static const String stringData = '''{
     "data": {},
     "content": [
       {
