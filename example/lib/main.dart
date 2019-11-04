@@ -11,23 +11,23 @@ class MyApp extends StatelessWidget {
       title: 'Contentful Rich Text Parser Demo',
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Contentful Rich Text Parser Demo'),
+          title: Text('Contentful Rich Text Parser Demo'),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: EdgeInsets.symmetric(horizontal: 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Flexible(
-                flex: 1,
-                child: ContentfulRichText(
-                  ContentfulData.jsonData,
-                ).documentToWidgetTree,
+              SingleChildScrollView(
+                child: ContentfulRichText(ContentfulData.jsonData)
+                    .documentToWidgetTree,
               ),
-              const Divider(height: 2),
-              const Text('JSON Data:'),
-              const Flexible(
-                flex: 6,
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Divider(height: 4),
+              ),
+              Text('JSON Data:'),
+              Expanded(
                 child: SingleChildScrollView(
                   child: Text(ContentfulData.stringData),
                 ),
