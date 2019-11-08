@@ -74,19 +74,17 @@ class ListItem extends StatelessWidget {
         );
       case LI_TYPE.ORDERED:
         return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.baseline,
+          textBaseline: TextBaseline.alphabetic,
           children: <Widget>[
-            SizedBox(
-              width: indent ?? 24.0,
-              child: Padding(
-                padding: EdgeInsets.only(left: 7.0, top: 2.0),
-                child: Text('$index$punctuation'),
-              ),
+            Padding(
+              padding: EdgeInsets.only(left: 7.0, top: 2.0, right: indent ?? 5),
+              child: Text('$index$punctuation'),
             ),
             Expanded(
               child: text != null
                   ? Padding(
-                      padding: EdgeInsets.only(top: 5.0),
+                      padding: const EdgeInsets.only(top: 5.0),
                       child: Text(text),
                     )
                   : Column(

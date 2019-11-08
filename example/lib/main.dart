@@ -1,7 +1,6 @@
 import 'package:contentful_rich_text/contentful_rich_text.dart';
+import 'package:example/contentful_data.dart';
 import 'package:flutter/material.dart';
-
-import './contentful_data.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,37 +13,26 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: Text('Contentful Rich Text Parser Demo'),
         ),
-        body: SingleChildScrollView(
-          child: DefaultTextStyle(
-            style: TextStyle(
-              color: Colors.black,
-            ),
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    ContentfulRichText(ContentfulData.jsonData)
-                        .documentToWidgetTree,
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20.0),
-                      child: Divider(
-                        color: Colors.black54,
-                      ),
-                    ),
-                    Text.rich(
-                      TextSpan(children: [
-                        TextSpan(
-                          text: 'JSON Data:',
-                        )
-                      ]),
-                    ),
-                    Text(ContentfulData.stringData),
-                  ],
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              SingleChildScrollView(
+                child: ContentfulRichText(ContentfulData.jsonData)
+                    .documentToWidgetTree,
+              ),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Divider(height: 4),
+              ),
+              Text('JSON Data:'),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Text(ContentfulData.stringData),
                 ),
               ),
-            ),
+            ],
           ),
         ),
       ),
