@@ -1,3 +1,6 @@
+## [0.1.2] - 11/14/2019
+* Fix ordered list to allow multi-digit numbering
+
 ## [0.1.1] - 06/25/2019
 * Update Changelog
 
