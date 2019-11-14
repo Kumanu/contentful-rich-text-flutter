@@ -134,10 +134,10 @@ class ContentfulRichText {
       return singletonRenderers.renderNode[node['nodeType']](
         node,
         (nodes) => List<TextSpan>.from(
-              nodes.map(
-                (node) => _processInlineNode(node),
-              ),
-            ),
+          nodes.map(
+            (node) => _processInlineNode(node),
+          ),
+        ),
       );
     } else {
       Next nextNode = (nodes) => nodeListToWidget(nodes);
@@ -172,9 +172,9 @@ class ContentfulRichText {
         (nodes) => nodes
             ?.map<TextSpan>(
               (node) => _processInlineNode(
-                    node,
-                    uri: link,
-                  ) as TextSpan,
+                node,
+                uri: link,
+              ) as TextSpan,
             )
             ?.toList(),
       );
