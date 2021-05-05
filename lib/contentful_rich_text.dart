@@ -81,8 +81,8 @@ class ContentfulRichText {
   static Widget defaultInline(INLINES type, Inline node) => Container();
 
   dynamic richTextJson;
-  Options options;
-  Document richTextDocument;
+  Options? options;
+  Document? richTextDocument;
 
   ContentfulRichText(this.richTextJson, {this.options});
 
@@ -99,28 +99,26 @@ class ContentfulRichText {
       singletonRenderers.renderNode = Map.from(
         defaultNodeRenderers.renderNodes,
       );
-      if (options?.renderNode?.renderNodes != null) {
-        singletonRenderers.renderNode.addAll(options.renderNode.renderNodes);
+      if (options?.renderNode.renderNodes != null) {
+        singletonRenderers.renderNode.addAll(options!.renderNode.renderNodes);
       }
       singletonRenderers.renderMark = MARKS.renderMarks(
-        options?.renderMark?.renderMarks,
+        options?.renderMark.renderMarks,
       );
 
       return Container(
-        child: nodeListToWidget(richTextDocument.content),
+        child: nodeListToWidget(richTextDocument?.content ?? []),
       );
     }
     return Container();
   }
 
   /// nodeListToWidget renders the Widget tree from the data nodes
-  Widget nodeListToWidget(List<dynamic> nodes) {
+  Widget nodeListToWidget(List<dynamic>? nodes) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: List<Widget>.from(
-        nodes?.map<Widget>((node) => nodeToWidget(node)) ?? [],
-      ),
+      children: nodes?.map<Widget>((node) => nodeToWidget(node)).toList() ?? [],
     );
   }
 
@@ -131,7 +129,7 @@ class ContentfulRichText {
       return Text.rich(TextSpan(text: _processInlineNode(node)));
     } else if (Helpers.isParagraph(node) || Helpers.isHeader(node)) {
       // TODO: Headers don't appear to set their size properly
-      return singletonRenderers.renderNode[node['nodeType']](
+      return singletonRenderers.renderNode[node['nodeType']]!(
         node,
         (nodes) => List<TextSpan>.from(
           nodes.map(
@@ -146,7 +144,7 @@ class ContentfulRichText {
         // TODO: Figure what to return when passed an unrecognized node.
         return Container();
       }
-      return singletonRenderers.renderNode[node['nodeType']](node, nextNode);
+      return singletonRenderers.renderNode[node['nodeType']]!(node, nextNode);
     }
   }
 
@@ -155,7 +153,7 @@ class ContentfulRichText {
   /// Hyperlink nodes
   dynamic _processInlineNode(
     node, {
-    String uri,
+    String? uri,
   }) {
     if (node['nodeType'] == 'hyperlink' || uri?.isNotEmpty == true) {
       // Note: Hyperlinks are nested in other blocs like Paragraphs/Headers
@@ -167,7 +165,7 @@ class ContentfulRichText {
         // pass uri for Hyperlink on text nodes for TapRecognizer
         node['data'] = {'uri': link};
       }
-      return singletonRenderers.renderNode[nodeType](
+      return singletonRenderers.renderNode[nodeType]!(
         node,
         (nodes) => nodes
             ?.map<TextSpan>(
@@ -182,7 +180,7 @@ class ContentfulRichText {
     // If not a hyperlink, process as text node
     TextNode textNode = TextNode(node);
     String nodeValue = HtmlUnescape().convert(textNode.value);
-    if (textNode.marks?.isNotEmpty == true) {
+    if (textNode.marks.isNotEmpty) {
       return TextSpan(
         text: nodeValue,
         style: MARKS.getMarksTextStyles(
@@ -194,7 +192,7 @@ class ContentfulRichText {
     return TextSpan(text: nodeValue);
   }
 
-  Document _parseRichTextJson() {
+  Document? _parseRichTextJson() {
     if (richTextJson == null || richTextJson['nodeType'] != 'document') {
       return null;
     }

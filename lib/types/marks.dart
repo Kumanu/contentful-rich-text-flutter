@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:contentful_rich_text/types/types.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class MARKS {
   operator [](dynamic index) => index is int
       ? items[index]
       : index is String
-          ? items.firstWhere((item) => item.key == index, orElse: () => null)
+          ? items.firstWhereOrNull((item) => item.key == index)
           : null;
 
   static const BOLD = const MARKS._internal('BOLD', 'bold');
@@ -28,11 +29,11 @@ class MARKS {
         UNDERLINE,
       ];
   static fromKey(String key) {
-    return items.firstWhere((item) => item.key == key, orElse: () => null);
+    return items.firstWhereOrNull((item) => item.key == key);
   }
 
   static fromValue(String value) {
-    return items.firstWhere((item) => item.value == value, orElse: () => null);
+    return items.firstWhereOrNull((item) => item.value == value);
   }
 
   // Can only be used to apply styling, does not return a TextSpan
@@ -44,7 +45,7 @@ class MARKS {
 
   static TextStyle getMarksTextStyles(
       List<Mark> marks, Map<dynamic, TextStyle> renderMark) {
-    Map<String, TextStyle> textStyles = {};
+    Map<String, TextStyle?> textStyles = {};
     marks.forEach((Mark mark) {
       textStyles.putIfAbsent(mark.type, () => renderMark[mark.type]);
     });
@@ -56,7 +57,7 @@ class MARKS {
   }
 
   static Map<dynamic, TextStyle> renderMarks(
-          Map<dynamic, TextStyle> optionRenderMarks) =>
+          Map<dynamic, TextStyle>? optionRenderMarks) =>
       optionRenderMarks == null
           ? Map.from(MARKS.defaultMarkRenderers.renderMarks)
           : (Map.from(MARKS.defaultMarkRenderers.renderMarks)

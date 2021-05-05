@@ -3,7 +3,7 @@ import 'package:contentful_rich_text/widgets/list_item.dart';
 import 'package:flutter/material.dart';
 
 class UnorderedList extends StatelessWidget {
-  final double indent;
+  final double? indent;
   final List<dynamic> children;
   final Next next;
 

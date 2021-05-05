@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Hr extends StatelessWidget {
-  final Color color;
-  final double height;
-  final EdgeInsets padding;
+  final Color? color;
+  final double? height;
+  final EdgeInsets? padding;
 
   Hr({
     this.color,
