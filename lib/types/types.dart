@@ -27,10 +27,11 @@ class Document extends Node<BLOCKS> {
   BLOCKS _nodeType = BLOCKS.DOCUMENT;
   List<dynamic> content;
 
-  Document(
-      {required this.content,
-      required String nodeType,
-      required Map<dynamic, dynamic> data}) {
+  Document({
+    required this.content,
+    required String nodeType,
+    required Map<dynamic, dynamic> data,
+  }) {
     this._nodeType = BLOCKS.fromValue(nodeType);
     this.data = data;
   }
@@ -56,15 +57,6 @@ class TextNode extends Node<String> {
       : value = node['value'],
         _nodeType = node['nodeType'],
         marks = node['marks']?.map((mark) => Mark(mark['type'])).toList() ?? [];
-/* {
-    this.value = node['value'];
-    this._nodeType = node['nodeType'];
-    List<Mark> _marks = <Mark>[];
-    node['marks']?.forEach((mark) {
-      _marks.add(Mark(mark['type']));
-    });
-    this.marks = _marks;
-  } */
 }
 
 class Mark {
