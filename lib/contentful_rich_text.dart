@@ -177,8 +177,19 @@ class ContentfulRichText {
             ?.toList(),
       );
     }
+
+    // for links to entries only process the child-nodes
+    if (node['nodeType'] == 'entry-hyperlink') {
+      return TextSpan(
+        children: node['content']
+            .map<TextSpan>((subNode) => _processInlineNode(subNode) as TextSpan)
+            .toList(),
+      );
+    }
+
     // If not a hyperlink, process as text node
     TextNode textNode = TextNode(node);
+    if (textNode.value == null) return TextSpan();
     String nodeValue = HtmlUnescape().convert(textNode.value);
     if (textNode.marks.isNotEmpty) {
       return TextSpan(
