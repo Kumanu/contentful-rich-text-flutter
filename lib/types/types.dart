@@ -4,35 +4,39 @@ import 'package:contentful_rich_text/types/schema_constraints.dart';
 import 'package:flutter/widgets.dart';
 
 abstract class Node<T> {
-  T _nodeType;
-  Map<dynamic, dynamic> data;
+  late T _nodeType;
+  Map<dynamic, dynamic>? data;
   T get nodeType => _nodeType;
 }
 
 abstract class Block<T> extends Node<BLOCKS> {
-  BLOCKS _nodeType;
-  List<T> content;
+  late BLOCKS _nodeType;
+  List<T>? content;
 }
 
 abstract class Inline<T> extends Node<INLINES> {
-  INLINES _nodeType;
-  List<T> content;
+  late INLINES _nodeType;
+  List<T>? content;
 }
 
 abstract class TopLevelBlock extends Node<TopLevelBlockEnum> {
-  TopLevelBlockEnum _nodeType;
+  late TopLevelBlockEnum _nodeType;
 }
 
 class Document extends Node<BLOCKS> {
   BLOCKS _nodeType = BLOCKS.DOCUMENT;
   List<dynamic> content;
 
-  Document({this.content, String nodeType, Map<dynamic, dynamic> data}) {
+  Document({
+    required this.content,
+    required String nodeType,
+    required Map<dynamic, dynamic> data,
+  }) {
     this._nodeType = BLOCKS.fromValue(nodeType);
     this.data = data;
   }
 
-  factory Document.fromJson(dynamic richTextJson) {
+  static Document? fromJson(dynamic richTextJson) {
     if (richTextJson == null) {
       return null;
     }
@@ -49,15 +53,10 @@ class TextNode extends Node<String> {
   String value;
   List<Mark> marks;
 
-  TextNode(dynamic node) {
-    this.value = node['value'];
-    this._nodeType = node['nodeType'];
-    List<Mark> _marks = List<Mark>();
-    node['marks']?.forEach((mark) {
-      _marks.add(Mark(mark['type']));
-    });
-    this.marks = _marks;
-  }
+  TextNode(dynamic node)
+      : value = node['value'],
+        _nodeType = node['nodeType'],
+        marks = node['marks']?.map((mark) => Mark(mark['type'])).toList() ?? [];
 }
 
 class Mark {
@@ -87,5 +86,5 @@ class Options {
   /// Mark renderers
   RenderMark renderMark;
 
-  Options({this.renderNode, this.renderMark});
+  Options({required this.renderNode, required this.renderMark});
 }

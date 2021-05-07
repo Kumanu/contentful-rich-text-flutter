@@ -14,16 +14,16 @@ Map<BLOCKS, double> _defaultHeadingSizes = {
 class Heading extends StatelessWidget {
   final BLOCKS level;
   final String text;
-  final List<dynamic> content;
+  final List<dynamic>? content;
   final FontWeight fontWeight;
   final Next next;
 
   Heading({
-    @required this.text,
+    this.text = '',
     this.level = BLOCKS.HEADING_1,
     this.content,
     this.fontWeight = FontWeight.bold,
-    this.next,
+    required this.next,
   });
 
   @override
@@ -32,7 +32,7 @@ class Heading extends StatelessWidget {
       TextSpan(
         children: [
           TextSpan(
-            text: text ?? '',
+            text: text,
             children: next(content),
             style: TextStyle(
               fontWeight: fontWeight,

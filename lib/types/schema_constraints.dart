@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:contentful_rich_text/types/blocks.dart';
 
 class TopLevelBlockEnum {
@@ -12,7 +13,7 @@ class TopLevelBlockEnum {
   operator [](dynamic index) => index is int
       ? items[index]
       : index is String
-          ? items.firstWhere((item) => item.key == index, orElse: () => null)
+          ? items.firstWhereOrNull((item) => item.key == index)
           : null;
 
   static const PARAGRAPH =
@@ -57,17 +58,15 @@ class TopLevelBlockEnum {
         EMBEDDED_ASSET,
       ];
   static fromKey(String key) {
-    return items.firstWhere((item) => item.key == key, orElse: () => null);
+    return items.firstWhereOrNull((item) => item.key == key);
   }
 
   static fromValue(dynamic value) {
     if (value is BLOCKS) {
-      return items.firstWhere((item) => item.value == value,
-          orElse: () => null);
+      return items.firstWhereOrNull((item) => item.value == value);
     }
     if (value is String) {
-      return items.firstWhere((item) => item.value.value == value,
-          orElse: () => null);
+      return items.firstWhereOrNull((item) => item.value.value == value);
     }
   }
 

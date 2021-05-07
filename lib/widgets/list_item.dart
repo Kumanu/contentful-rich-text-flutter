@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 enum LI_TYPE { UNORDERED, ORDERED }
 
 class ListItem extends StatelessWidget {
-  final LI_TYPE type;
-  final double indent;
-  final String text;
-  final String punctuation;
-  final String index;
-  final List<Widget> children;
+  final LI_TYPE? type;
+  final double? indent;
+  final String? text;
+  final String? punctuation;
+  final String? index;
+  final List<Widget>? children;
 
   ListItem({
-    @required this.type,
-    @required this.text,
+    required this.type,
+    required this.text,
     this.index,
     this.indent,
     this.punctuation,
@@ -22,7 +22,7 @@ class ListItem extends StatelessWidget {
 
   ListItem.unordered({
     this.type = LI_TYPE.UNORDERED,
-    @required this.text,
+    required this.text,
     this.index,
     this.indent,
     this.punctuation,
@@ -31,8 +31,8 @@ class ListItem extends StatelessWidget {
 
   ListItem.ordered({
     this.type = LI_TYPE.ORDERED,
-    @required this.text,
-    @required this.index,
+    required this.text,
+    required this.index,
     this.indent,
     this.punctuation = '.',
     this.children,
@@ -62,7 +62,7 @@ class ListItem extends StatelessWidget {
               child: text != null
                   ? Padding(
                       padding: EdgeInsets.only(top: 5.0),
-                      child: Text(text),
+                      child: Text(text!),
                     )
                   : Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,7 +85,7 @@ class ListItem extends StatelessWidget {
               child: text != null
                   ? Padding(
                       padding: const EdgeInsets.only(top: 5.0),
-                      child: Text(text),
+                      child: Text(text!),
                     )
                   : Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,7 +95,8 @@ class ListItem extends StatelessWidget {
             ),
           ],
         );
+      case null:
+        return Container();
     }
-    return Container();
   }
 }

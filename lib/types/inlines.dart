@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart' show IterableExtension;
+
 /// Map of all Contentful inlines
 class INLINES {
   final String _key;
@@ -11,7 +13,7 @@ class INLINES {
   operator [](dynamic index) => index is int
       ? items[index]
       : index is String
-          ? items.firstWhere((item) => item.key == index, orElse: () => null)
+          ? items.firstWhereOrNull((item) => item.key == index)
           : null;
 
   static const HYPERLINK = const INLINES._internal('HYPERLINK', 'hyperlink');
@@ -30,10 +32,10 @@ class INLINES {
         EMBEDDED_ENTRY,
       ];
   static fromKey(String key) {
-    return items.firstWhere((item) => item.key == key, orElse: () => null);
+    return items.firstWhereOrNull((item) => item.key == key);
   }
 
   static fromValue(String value) {
-    return items.firstWhere((item) => item.value == value, orElse: () => null);
+    return items.firstWhereOrNull((item) => item.value == value);
   }
 }
