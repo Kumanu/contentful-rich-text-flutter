@@ -50,12 +50,12 @@ class Document extends Node<BLOCKS> {
 
 class TextNode extends Node<String> {
   String _nodeType = 'text';
-  String value;
+  String value = '';
   List<Mark> marks = [];
 
   TextNode(dynamic node) { 
-    value = node['value'];
-    _nodeType = node['nodeType'];
+    value = node['value'] ?? '';
+    _nodeType = node['nodeType'] ?? '';
     node['marks']?.map((mark) {
       marks.add(Mark(mark['type']));
     });
