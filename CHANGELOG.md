@@ -1,3 +1,7 @@
+## [1.0.0] - 7/13/2021
+* BREAKING - migrate to null safety
+* fix list type error
+
 ## [0.1.2] - 11/14/2019
 * Fix ordered list to allow multi-digit numbering
 
