@@ -22,49 +22,49 @@ class ContentfulRichText {
     BLOCKS.PARAGRAPH.value: (node, next) => Paragraph(node, next),
     BLOCKS.HEADING_1.value: (node, next) => Heading(
           level: BLOCKS.HEADING_1,
-          text: node['value'],
-          content: node['content'],
+          text: node['value'] ?? '',
+          content: node['content'] ?? '',
           next: next,
         ),
     BLOCKS.HEADING_2.value: (node, next) => Heading(
           level: BLOCKS.HEADING_2,
-          text: node['value'],
-          content: node['content'],
+          text: node['value'] ?? '',
+          content: node['content'] ?? '',
           next: next,
         ),
     BLOCKS.HEADING_3.value: (node, next) => Heading(
           level: BLOCKS.HEADING_3,
-          text: node['value'],
-          content: node['content'],
+          text: node['value'] ?? '',
+          content: node['content'] ?? '',
           next: next,
         ),
     BLOCKS.HEADING_4.value: (node, next) => Heading(
           level: BLOCKS.HEADING_4,
-          text: node['value'],
-          content: node['content'],
+          text: node['value'] ?? '',
+          content: node['content'] ?? '',
           next: next,
         ),
     BLOCKS.HEADING_5.value: (node, next) => Heading(
           level: BLOCKS.HEADING_5,
-          text: node['value'],
-          content: node['content'],
+          text: node['value'] ?? '',
+          content: node['content'] ?? '',
           next: next,
         ),
     BLOCKS.HEADING_6.value: (node, next) => Heading(
           level: BLOCKS.HEADING_6,
-          text: node['value'],
-          content: node['content'],
+          text: node['value'] ?? '',
+          content: node['content'] ?? '',
           next: next,
         ),
     BLOCKS.EMBEDDED_ENTRY.value: (node, next) => Container(), // TODO: implement
-    BLOCKS.UL_LIST.value: (node, next) => UnorderedList(node['content'], next),
-    BLOCKS.OL_LIST.value: (node, next) => OrderedList(node['content'], next),
+    BLOCKS.UL_LIST.value: (node, next) => UnorderedList(node['content'] ?? '', next),
+    BLOCKS.OL_LIST.value: (node, next) => OrderedList(node['content'] ?? '', next),
     BLOCKS.LIST_ITEM.value: (node, next) => ListItem(
           text: node.value,
           type: node.nodeType == BLOCKS.OL_LIST.value
               ? LI_TYPE.ORDERED
               : LI_TYPE.UNORDERED,
-          children: node['content'],
+          children: node['content'] ?? '',
         ),
     BLOCKS.QUOTE.value: (node, next) => Container(), // TODO: implement
     BLOCKS.HR.value: (node, next) => Hr(),
@@ -158,7 +158,7 @@ class ContentfulRichText {
     if (node['nodeType'] == 'hyperlink' || uri?.isNotEmpty == true) {
       // Note: Hyperlinks are nested in other blocs like Paragraphs/Headers
       String link = uri ?? node['data']['uri'];
-      String nodeType = node['nodeType'];
+      String nodeType = node['nodeType'] ?? '';
       if (uri?.isNotEmpty == true && node['nodeType'] == 'text') {
         // ensure Hyperlink is used for text blocks with uris
         nodeType = 'hyperlink';
@@ -181,7 +181,7 @@ class ContentfulRichText {
     // for links to entries only process the child-nodes
     if (node['nodeType'] == 'entry-hyperlink') {
       return TextSpan(
-        children: node['content']
+        children: (node['content'] ?? '')
             .map<TextSpan>((subNode) => _processInlineNode(subNode) as TextSpan)
             .toList(),
       );
