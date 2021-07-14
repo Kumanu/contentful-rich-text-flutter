@@ -57,8 +57,10 @@ class ContentfulRichText {
           next: next,
         ),
     BLOCKS.EMBEDDED_ENTRY.value: (node, next) => Container(), // TODO: implement
-    BLOCKS.UL_LIST.value: (node, next) => UnorderedList(node['content'] ?? '', next),
-    BLOCKS.OL_LIST.value: (node, next) => OrderedList(node['content'] ?? '', next),
+    BLOCKS.UL_LIST.value: (node, next) =>
+        UnorderedList(node['content'] ?? '', next),
+    BLOCKS.OL_LIST.value: (node, next) =>
+        OrderedList(node['content'] ?? '', next),
     BLOCKS.LIST_ITEM.value: (node, next) => ListItem(
           text: node.value,
           type: node.nodeType == BLOCKS.OL_LIST.value
@@ -103,7 +105,7 @@ class ContentfulRichText {
         singletonRenderers.renderNode.addAll(options!.renderNode.renderNodes);
       }
       singletonRenderers.renderMark = MARKS.renderMarks(
-        options?.renderMark.renderMarks,
+        options?.renderMark?.renderMarks,
       );
 
       return Container(

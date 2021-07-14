@@ -53,7 +53,7 @@ class TextNode extends Node<String> {
   String value = '';
   List<Mark> marks = [];
 
-  TextNode(dynamic node) { 
+  TextNode(dynamic node) {
     value = node['value'] ?? '';
     _nodeType = node['nodeType'] ?? '';
     node['marks']?.map((mark) {
@@ -87,7 +87,7 @@ class Options {
   RenderNode renderNode;
 
   /// Mark renderers
-  RenderMark renderMark;
+  RenderMark? renderMark;
 
-  Options({required this.renderNode, required this.renderMark});
+  Options({required this.renderNode, this.renderMark});
 }
