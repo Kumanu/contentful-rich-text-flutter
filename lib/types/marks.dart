@@ -50,9 +50,11 @@ class MARKS {
       textStyles.putIfAbsent(mark.type, () => renderMark[mark.type]);
     });
     return TextStyle(
-      fontWeight: textStyles['bold']?.fontWeight,
-      fontStyle: textStyles['italic']?.fontStyle,
-      decoration: textStyles['underline']?.decoration,
+      fontWeight: textStyles['bold'] != null ? FontWeight.bold : null,
+      fontStyle: textStyles['italic'] != null ? FontStyle.italic : null,
+      decoration:
+          textStyles['underline'] != null ? TextDecoration.underline : null,
+      // color: textStyles['bold']?.color,
     );
   }
 
