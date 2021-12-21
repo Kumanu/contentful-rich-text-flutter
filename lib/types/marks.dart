@@ -12,11 +12,17 @@ class MARKS {
   String toString() => 'MARKS.$_key';
   String get key => _key;
   String get value => _value;
-  operator [](dynamic index) => index is int
-      ? items[index]
-      : index is String
-          ? items.firstWhereOrNull((item) => item.key == index)
-          : null;
+
+  operator [](dynamic index) {
+    if (index is int) {
+      return index <= items.length ? items[index] : null;
+    }
+
+    if (index is String) {
+      return items.firstWhereOrNull((item) => item.key == index);
+    }
+    return null;
+  }
 
   static const BOLD = const MARKS._internal('BOLD', 'bold');
   static const ITALIC = const MARKS._internal('ITALIC', 'italic');
@@ -28,13 +34,11 @@ class MARKS {
         ITALIC,
         UNDERLINE,
       ];
-  static fromKey(String key) {
-    return items.firstWhereOrNull((item) => item.key == key);
-  }
+  static MARKS? fromKey(String key) =>
+      items.firstWhereOrNull((item) => item.key == key);
 
-  static fromValue(String value) {
-    return items.firstWhereOrNull((item) => item.value == value);
-  }
+  static MARKS? fromValue(String value) =>
+      items.firstWhereOrNull((item) => item.value == value);
 
   // Can only be used to apply styling, does not return a TextSpan
   static RenderMark defaultMarkRenderers = RenderMark({

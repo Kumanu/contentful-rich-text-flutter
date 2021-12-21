@@ -24,15 +24,14 @@ abstract class TopLevelBlock extends Node<TopLevelBlockEnum> {
 }
 
 class Document extends Node<BLOCKS> {
-  BLOCKS _nodeType = BLOCKS.DOCUMENT;
-  List<dynamic> content;
+  final BLOCKS _nodeType;
+  final List<dynamic> content;
 
   Document({
     required this.content,
     required String nodeType,
     required Map<dynamic, dynamic> data,
-  }) {
-    this._nodeType = BLOCKS.fromValue(nodeType);
+  }) : _nodeType = BLOCKS.fromValue(nodeType) ?? BLOCKS.DOCUMENT {
     this.data = data;
   }
 
@@ -49,19 +48,21 @@ class Document extends Node<BLOCKS> {
 }
 
 class TextNode extends Node<String> {
-  String _nodeType = 'text';
-  String value = '';
-  List<Mark> marks = [];
+  final String _nodeType;
+  final String value;
+  final List<Mark> marks;
 
-  TextNode(dynamic node) {
-    value = node['value'] ?? '';
-    _nodeType = node['nodeType'] ?? '';
-    marks = node['marks']?.map<Mark>((mark) => Mark(mark['type'])).toList() ?? <Mark>[];
-  }
+  TextNode(dynamic node)
+      : value = node['value'] ?? '',
+        _nodeType = node['nodeType'] ?? '',
+        marks = (node['marks'] as List?)
+                ?.map((mark) => Mark(mark['type']))
+                .toList() ??
+            <Mark>[];
 }
 
 class Mark {
-  String type;
+  final String type;
 
   Mark(this.type);
 }
@@ -71,12 +72,12 @@ typedef Next = dynamic Function(dynamic nodes);
 typedef NodeRenderer = dynamic Function(dynamic node, Next next);
 
 class RenderNode<T> {
-  Map<T, NodeRenderer> renderNodes; // NodeRenderer not Function
+  final Map<T, NodeRenderer> renderNodes; // NodeRenderer not Function
   RenderNode(this.renderNodes);
 }
 
 class RenderMark<T> {
-  Map<T, TextStyle> renderMarks;
+  final Map<T, TextStyle> renderMarks;
   RenderMark(this.renderMarks);
 }
 

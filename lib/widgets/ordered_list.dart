@@ -14,20 +14,20 @@ class OrderedList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> listItems = [];
-    children.forEach((child) {
-      listItems.add(
-        ListItem.ordered(
-          text: child['value'],
-          index: (this.children.indexOf(child) + 1).toString(),
-          children: <Widget>[
-            next(child['content'])
-          ], // TODO: Implement nested lists
-        ),
-      );
-    });
     return Column(
-      children: listItems,
+      children: children
+          .asMap()
+          .entries
+          .map(
+            (entry) => ListItem.ordered(
+              text: entry.value['value'],
+              index: (entry.key + 1).toString(),
+              children: <Widget>[
+                next(entry.value['content'])
+              ], // TODO: Implement nested lists
+            ),
+          )
+          .toList(),
     );
   }
 }

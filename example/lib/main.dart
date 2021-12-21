@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
           title: Text('Contentful Rich Text Parser Demo'),
         ),
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -23,8 +23,8 @@ class MyApp extends StatelessWidget {
                     .documentToWidgetTree,
               ),
               Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Divider(height: 4),
+                padding: const EdgeInsets.all(8.0),
+                child: const Divider(height: 4),
               ),
               Text('JSON Data:'),
               Expanded(

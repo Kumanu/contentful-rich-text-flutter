@@ -11,11 +11,17 @@ class BLOCKS {
   String toString() => 'BLOCKS.$_key';
   String get key => _key;
   String get value => _value;
-  operator [](dynamic index) => index is int
-      ? items[index]
-      : index is String
-          ? items.firstWhereOrNull((item) => item.key == index)
-          : null;
+
+  operator [](dynamic index) {
+    if (index is int) {
+      return index <= items.length ? items[index] : null;
+    }
+
+    if (index is String) {
+      return items.firstWhereOrNull((item) => item.key == index);
+    }
+    return null;
+  }
 
   static const DOCUMENT = const BLOCKS._internal('DOCUMENT', 'document');
   static const PARAGRAPH = const BLOCKS._internal('PARAGRAPH', 'paragraph');
@@ -53,11 +59,11 @@ class BLOCKS {
         EMBEDDED_ENTRY,
         EMBEDDED_ASSET,
       ];
-  static fromKey(String key) {
+  static BLOCKS? fromKey(String key) {
     return items.firstWhereOrNull((item) => item.key == key);
   }
 
-  static fromValue(String value) {
+  static BLOCKS? fromValue(String value) {
     return items.firstWhereOrNull((item) => item.value == value);
   }
 }

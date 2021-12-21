@@ -10,11 +10,17 @@ class INLINES {
   String toString() => 'INLINES.$_key';
   String get key => _key;
   String get value => _value;
-  operator [](dynamic index) => index is int
-      ? items[index]
-      : index is String
-          ? items.firstWhereOrNull((item) => item.key == index)
-          : null;
+
+  operator [](dynamic index) {
+    if (index is int) {
+      return index <= items.length ? items[index] : null;
+    }
+
+    if (index is String) {
+      return items.firstWhereOrNull((item) => item.key == index);
+    }
+    return null;
+  }
 
   static const HYPERLINK = const INLINES._internal('HYPERLINK', 'hyperlink');
   static const ENTRY_HYPERLINK =
@@ -31,11 +37,9 @@ class INLINES {
         ASSET_HYPERLINK,
         EMBEDDED_ENTRY,
       ];
-  static fromKey(String key) {
-    return items.firstWhereOrNull((item) => item.key == key);
-  }
+  static INLINES? fromKey(String key) =>
+      items.firstWhereOrNull((item) => item.key == key);
 
-  static fromValue(String value) {
-    return items.firstWhereOrNull((item) => item.value == value);
-  }
+  static INLINES? fromValue(String value) =>
+      items.firstWhereOrNull((item) => item.value == value);
 }

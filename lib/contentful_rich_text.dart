@@ -169,14 +169,16 @@ class ContentfulRichText {
       }
       return singletonRenderers.renderNode[nodeType]!(
         node,
-        (nodes) => nodes
-            ?.map<TextSpan>(
-              (node) => _processInlineNode(
-                node,
-                uri: link,
-              ) as TextSpan,
-            )
-            ?.toList(),
+        (nodes) =>
+            nodes
+                ?.map<TextSpan>(
+                  (node) => _processInlineNode(
+                    node,
+                    uri: link,
+                  ) as TextSpan,
+                )
+                ?.toList() ??
+            <InlineSpan>[],
       );
     }
 
@@ -191,7 +193,6 @@ class ContentfulRichText {
 
     // If not a hyperlink, process as text node
     TextNode textNode = TextNode(node);
-    if (textNode.value == null) return TextSpan();
     String nodeValue = HtmlUnescape().convert(textNode.value);
     if (textNode.marks.isNotEmpty) {
       return TextSpan(

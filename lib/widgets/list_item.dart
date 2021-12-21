@@ -49,7 +49,7 @@ class ListItem extends StatelessWidget {
               width: indent ?? 24.0,
               height: 20.0,
               child: Padding(
-                padding: EdgeInsets.only(right: 1.0, left: 8.0),
+                padding: const EdgeInsets.only(right: 1.0, left: 8.0),
                 child: Bullet(
                   style: TextStyle(
                     fontSize: 16.0,
@@ -61,7 +61,7 @@ class ListItem extends StatelessWidget {
             Expanded(
               child: text != null
                   ? Padding(
-                      padding: EdgeInsets.only(top: 5.0),
+                      padding: const EdgeInsets.only(top: 5.0),
                       child: Text(text!),
                     )
                   : Column(
