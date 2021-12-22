@@ -56,9 +56,7 @@ class TextNode extends Node<String> {
   TextNode(dynamic node) {
     value = node['value'] ?? '';
     _nodeType = node['nodeType'] ?? '';
-    node['marks']?.map((mark) {
-      marks.add(Mark(mark['type']));
-    });
+    marks = node['marks']?.map<Mark>((mark) => Mark(mark['type'])).toList() ?? <Mark>[];
   }
 }
 
