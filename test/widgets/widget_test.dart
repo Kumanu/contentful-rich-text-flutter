@@ -1,14 +1,18 @@
 import 'dart:convert';
 
 import 'package:contentful_rich_text/contentful_rich_text.dart';
-import 'package:contentful_rich_text/types/blocks.dart';
-import 'package:contentful_rich_text/widgets/heading.dart';
 import 'package:contentful_rich_text/widgets/hr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'sample_json.dart';
+
+/*
+  For full support, it might be worth porting all of the tests at
+  https://github.com/contentful/rich-text/blob/master/packages/rich-text-html-renderer/src/__test__/index.test.ts
+  over to this package
+ */
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -19,23 +23,15 @@ void main() {
     );
   }
 
-  /*
-    Things to test:
-      blocks
-      helpers (maybe a separate test for that)
-      inlines
-      marks (especially null handling)
-
-      headings
-      hr
-      hyperlink
-      ordered lists
-      unordered lists
-   */
   testWidgets('should display paragraph', (WidgetTester tester) async {
     await tester.pumpWidget(_buildWidget(paragraphJson));
 
-    expect(find.text('This is a paragraph'), findsOneWidget);
+    final finder = find.text('This is a paragraph');
+    expect(finder, findsOneWidget);
+    final widget = tester.widget(finder) as Text;
+    final span = widget.textSpan?.getSpanForPosition(TextPosition(offset: 0));
+    expect(span, isNotNull);
+    expect(span?.style, isNull);
   });
 
   testWidgets('should handle missing marks element',
@@ -145,14 +141,50 @@ void main() {
     expect(find.byType(Hr), findsOneWidget);
   });
 
-  testWidgets('should display heading', (WidgetTester tester) async {
+  testWidgets('should display headings', (WidgetTester tester) async {
     await tester.pumpWidget(_buildWidget(headingJson));
 
-    expect(find.text('Testing'), findsOneWidget);
-    final finder = find.byType(Heading);
+    var finder = find.text('test - heading 1');
     expect(finder, findsOneWidget);
-    final heading = tester.widget(finder) as Heading;
-    expect(heading.level, BLOCKS.HEADING_1);
+    var widget = tester.widget(finder) as Text;
+    var span = widget.textSpan?.getSpanForPosition(TextPosition(offset: 0));
+    expect(span?.style?.fontWeight, FontWeight.bold);
+    expect(span?.style?.fontSize, 24);
+
+    finder = find.text('test - heading 2');
+    expect(finder, findsOneWidget);
+    widget = tester.widget(finder) as Text;
+    span = widget.textSpan?.getSpanForPosition(TextPosition(offset: 0));
+    expect(span?.style?.fontWeight, FontWeight.bold);
+    expect(span?.style?.fontSize, 22);
+
+    finder = find.text('test - heading 3');
+    expect(finder, findsOneWidget);
+    widget = tester.widget(finder) as Text;
+    span = widget.textSpan?.getSpanForPosition(TextPosition(offset: 0));
+    expect(span?.style?.fontWeight, FontWeight.bold);
+    expect(span?.style?.fontSize, 20);
+
+    finder = find.text('test - heading 4');
+    expect(finder, findsOneWidget);
+    widget = tester.widget(finder) as Text;
+    span = widget.textSpan?.getSpanForPosition(TextPosition(offset: 0));
+    expect(span?.style?.fontWeight, FontWeight.bold);
+    expect(span?.style?.fontSize, 18);
+
+    finder = find.text('test - heading 5');
+    expect(finder, findsOneWidget);
+    widget = tester.widget(finder) as Text;
+    span = widget.textSpan?.getSpanForPosition(TextPosition(offset: 0));
+    expect(span?.style?.fontWeight, FontWeight.bold);
+    expect(span?.style?.fontSize, 16);
+
+    finder = find.text('test - heading 6');
+    expect(finder, findsOneWidget);
+    widget = tester.widget(finder) as Text;
+    span = widget.textSpan?.getSpanForPosition(TextPosition(offset: 0));
+    expect(span?.style?.fontWeight, FontWeight.bold);
+    expect(span?.style?.fontSize, 14);
   });
 
   testWidgets('should display hyperlink', (WidgetTester tester) async {
@@ -177,5 +209,54 @@ void main() {
     await tester.tap(finder);
     await tester.pumpAndSettle();
     expect(launched, isTrue);
+  });
+
+  // TODO: Tests for node types yet to be implemented
+  //  embedded entry
+  //  quote
+  //  inline asset hyperlink
+  //  inline entry hyperlink
+  //  inline embedded entry
+
+  testWidgets('should display embedded entry', (WidgetTester tester) async {
+    await tester.pumpWidget(_buildWidget(embeddedEntryJson));
+
+    // Currently Container is used as a placeholder for embedded entry blocks
+    expect(find.byType(Container), findsWidgets);
+  });
+
+  testWidgets('should display quotes', (WidgetTester tester) async {
+    await tester.pumpWidget(_buildWidget(quoteJson));
+
+    expect(find.text('hello'), findsOneWidget);
+    // TODO: This should return one widget when implemented
+    expect(find.text('world'), findsNothing);
+
+    // Currently Container is used as a placeholder for quotes
+    expect(find.byType(Container), findsWidgets);
+  });
+
+  testWidgets('should display inline asset hyperlink',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(_buildWidget(inlineAssetHyperlinkJson));
+
+    // Currently Container is used as a placeholder for unimplemented inlines
+    expect(find.byType(Container), findsWidgets);
+  });
+
+  testWidgets('should display inline entry hyperlink',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(_buildWidget(inlineEntryHyperlinkJson));
+
+    // Currently Container is used as a placeholder for unimplemented inlines
+    expect(find.byType(Container), findsWidgets);
+  });
+
+  testWidgets('should display inline embedded entry',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(_buildWidget(inlineEmbeddedEntryJson));
+
+    // Currently Container is used as a placeholder for unimplemented inlines
+    expect(find.byType(Container), findsWidgets);
   });
 }

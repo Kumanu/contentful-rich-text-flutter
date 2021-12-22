@@ -71,16 +71,16 @@ class ContentfulRichText {
     BLOCKS.QUOTE.value: (node, next) => Container(), // TODO: implement
     BLOCKS.HR.value: (node, next) => Hr(),
     INLINES.ASSET_HYPERLINK.value: (node, next) =>
-        defaultInline(INLINES.ASSET_HYPERLINK, node as Inline),
+        _defaultInline(INLINES.ASSET_HYPERLINK, node as Inline),
     INLINES.ENTRY_HYPERLINK.value: (node, next) =>
-        defaultInline(INLINES.ENTRY_HYPERLINK, node as Inline),
+        _defaultInline(INLINES.ENTRY_HYPERLINK, node as Inline),
     INLINES.EMBEDDED_ENTRY.value: (node, next) =>
-        defaultInline(INLINES.EMBEDDED_ENTRY, node as Inline),
+        _defaultInline(INLINES.EMBEDDED_ENTRY, node as Inline),
     INLINES.HYPERLINK.value: (node, next) => Hyperlink(node, next),
   });
 
   // TODO: implement
-  static Widget defaultInline(INLINES type, Inline node) => Container();
+  static Widget _defaultInline(INLINES type, Inline node) => Container();
 
   dynamic richTextJson;
   Options? options;

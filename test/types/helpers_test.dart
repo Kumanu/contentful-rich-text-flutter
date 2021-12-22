@@ -1,14 +1,3 @@
-/*
-Things to test:
-  isInline
-  isBlock
-  isTopLevelBlock
-  isParagraph
-  isHeader
-  isText
-  isHyperlink
- */
-
 import 'package:contentful_rich_text/types/helpers.dart';
 import 'package:flutter_test/flutter_test.dart';
 
