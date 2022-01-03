@@ -10,11 +10,16 @@ class TopLevelBlockEnum {
   String toString() => 'TopLevelBlockEnum.$_key';
   String get key => _key;
   BLOCKS get value => _value;
-  operator [](dynamic index) => index is int
-      ? items[index]
-      : index is String
-          ? items.firstWhereOrNull((item) => item.key == index)
-          : null;
+
+  operator [](dynamic index) {
+    if (index is int) {
+      return index <= items.length ? items[index] : null;
+    }
+    if (index is String) {
+      return items.firstWhereOrNull((item) => item.key == index);
+    }
+    return null;
+  }
 
   static const PARAGRAPH =
       const TopLevelBlockEnum._internal('PARAGRAPH', BLOCKS.PARAGRAPH);
@@ -57,17 +62,17 @@ class TopLevelBlockEnum {
         EMBEDDED_ENTRY,
         EMBEDDED_ASSET,
       ];
-  static fromKey(String key) {
-    return items.firstWhereOrNull((item) => item.key == key);
-  }
+  static TopLevelBlockEnum? fromKey(String key) =>
+      items.firstWhereOrNull((item) => item.key == key);
 
-  static fromValue(dynamic value) {
+  static TopLevelBlockEnum? fromValue(dynamic value) {
     if (value is BLOCKS) {
       return items.firstWhereOrNull((item) => item.value == value);
     }
     if (value is String) {
       return items.firstWhereOrNull((item) => item.value.value == value);
     }
+    return null;
   }
 
   /// Array of all top level block types.

@@ -15,7 +15,7 @@ class Helpers {
 
   /// Checks if the node is an instance of TopLevelBlocks
   static bool isTopLevelBlock(dynamic node) {
-    return TopLevelBlockEnum.fromValue(node['nodeType']);
+    return TopLevelBlockEnum.fromValue(node['nodeType']) != null;
   }
 
   /// Checks if the node is an instance of Paragraph

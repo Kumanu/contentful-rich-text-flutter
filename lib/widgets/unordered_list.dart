@@ -11,19 +11,17 @@ class UnorderedList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> listItems = [];
-    children.forEach((child) {
-      listItems.add(
-        ListItem.unordered(
-          text: child['value'],
-          children: <Widget>[
-            next(child['content'])
-          ], // TODO: Implement nested lists
-        ),
-      );
-    });
     return Column(
-      children: listItems,
+      children: children
+          .map(
+            (child) => ListItem.unordered(
+              text: child['value'],
+              children: <Widget>[
+                next(child['content'])
+              ], // TODO: Implement nested lists
+            ),
+          )
+          .toList(),
     );
   }
 }
