@@ -1,3 +1,7 @@
+## [1.0.1] - 01/10/2022
+* fix text features (underline and italics) not working
+* add tests
+
 ## [1.0.0] - 7/13/2021
 * BREAKING - migrate to null safety
 * fix list type error
