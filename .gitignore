@@ -6,16 +6,14 @@
 .generated/
 
 build/
-ios/
-android/
+coverage/
 
 .idea/
 .vagrant/
 .sconsign.dblite
 .svn/
 
-.DS_Store
-*.swp
+*.sw?
 profile
 
 DerivedData/
