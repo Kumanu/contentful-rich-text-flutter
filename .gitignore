@@ -4,6 +4,8 @@
 .packages
 .pub/
 .generated/
+.flutter-plugins
+.flutter-plugins-dependencies
 
 build/
 coverage/
