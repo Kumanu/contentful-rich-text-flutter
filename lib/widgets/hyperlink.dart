@@ -24,10 +24,10 @@ class Hyperlink extends TextSpan {
           children: next(node['content']),
           recognizer: TapGestureRecognizer()
             ..onTap = () async {
-              String uri = node['data']['uri'];
               // NOTE: Defaults to Url_Launcher, but component can be overridden
-              if (await canLaunch(uri)) {
-                await launch(uri);
+              final uri = Uri.tryParse(node['data']['uri']);
+              if (uri != null && await canLaunchUrl(uri)) {
+                await launchUrl(uri);
               }
             },
         );
