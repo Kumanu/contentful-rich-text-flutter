@@ -35,7 +35,8 @@ void main() {
     expect(span?.style, isNull);
   });
 
-  testWidgets('should handle missing marks element', (WidgetTester tester) async {
+  testWidgets('should handle missing marks element',
+      (WidgetTester tester) async {
     await tester.pumpWidget(_buildWidget(absentMarksJson));
 
     expect(find.text('This is a paragraph'), findsOneWidget);
@@ -66,48 +67,72 @@ void main() {
     await tester.pumpWidget(_buildWidget(orderedListJson));
 
     // Find the row for step one
-    var finder = find.ancestor(of: find.text('Step one'), matching: find.byType(Row));
-    expect(find.descendant(of: finder, matching: find.text('1.')), findsOneWidget);
-    expect(find.descendant(of: finder, matching: find.text('Step one')), findsOneWidget);
+    var finder =
+        find.ancestor(of: find.text('Step one'), matching: find.byType(Row));
+    expect(
+        find.descendant(of: finder, matching: find.text('1.')), findsOneWidget);
+    expect(find.descendant(of: finder, matching: find.text('Step one')),
+        findsOneWidget);
 
     // Find the row for step two
-    finder = find.ancestor(of: find.text('Step two'), matching: find.byType(Row));
-    expect(find.descendant(of: finder, matching: find.text('2.')), findsOneWidget);
-    expect(find.descendant(of: finder, matching: find.text('Step two')), findsOneWidget);
+    finder =
+        find.ancestor(of: find.text('Step two'), matching: find.byType(Row));
+    expect(
+        find.descendant(of: finder, matching: find.text('2.')), findsOneWidget);
+    expect(find.descendant(of: finder, matching: find.text('Step two')),
+        findsOneWidget);
 
     // Find the row for step three
-    finder = find.ancestor(of: find.text('Step three'), matching: find.byType(Row));
-    expect(find.descendant(of: finder, matching: find.text('3.')), findsOneWidget);
-    expect(find.descendant(of: finder, matching: find.text('Step three')), findsOneWidget);
+    finder =
+        find.ancestor(of: find.text('Step three'), matching: find.byType(Row));
+    expect(
+        find.descendant(of: finder, matching: find.text('3.')), findsOneWidget);
+    expect(find.descendant(of: finder, matching: find.text('Step three')),
+        findsOneWidget);
 
     // Find the row for step four
-    finder = find.ancestor(of: find.text('Step four'), matching: find.byType(Row));
-    expect(find.descendant(of: finder, matching: find.text('4.')), findsOneWidget);
-    expect(find.descendant(of: finder, matching: find.text('Step four')), findsOneWidget);
+    finder =
+        find.ancestor(of: find.text('Step four'), matching: find.byType(Row));
+    expect(
+        find.descendant(of: finder, matching: find.text('4.')), findsOneWidget);
+    expect(find.descendant(of: finder, matching: find.text('Step four')),
+        findsOneWidget);
   });
 
   testWidgets('should display unordered list', (WidgetTester tester) async {
     await tester.pumpWidget(_buildWidget(unorderedListJson));
 
     // Find the row for step one
-    var finder = find.ancestor(of: find.text('Step one'), matching: find.byType(Row));
-    expect(find.descendant(of: finder, matching: find.text('•')), findsOneWidget);
-    expect(find.descendant(of: finder, matching: find.text('Step one')), findsOneWidget);
+    var finder =
+        find.ancestor(of: find.text('Step one'), matching: find.byType(Row));
+    expect(
+        find.descendant(of: finder, matching: find.text('•')), findsOneWidget);
+    expect(find.descendant(of: finder, matching: find.text('Step one')),
+        findsOneWidget);
 
     // Find the row for step two
-    finder = find.ancestor(of: find.text('Step two'), matching: find.byType(Row));
-    expect(find.descendant(of: finder, matching: find.text('•')), findsOneWidget);
-    expect(find.descendant(of: finder, matching: find.text('Step two')), findsOneWidget);
+    finder =
+        find.ancestor(of: find.text('Step two'), matching: find.byType(Row));
+    expect(
+        find.descendant(of: finder, matching: find.text('•')), findsOneWidget);
+    expect(find.descendant(of: finder, matching: find.text('Step two')),
+        findsOneWidget);
 
     // Find the row for step three
-    finder = find.ancestor(of: find.text('Step three'), matching: find.byType(Row));
-    expect(find.descendant(of: finder, matching: find.text('•')), findsOneWidget);
-    expect(find.descendant(of: finder, matching: find.text('Step three')), findsOneWidget);
+    finder =
+        find.ancestor(of: find.text('Step three'), matching: find.byType(Row));
+    expect(
+        find.descendant(of: finder, matching: find.text('•')), findsOneWidget);
+    expect(find.descendant(of: finder, matching: find.text('Step three')),
+        findsOneWidget);
 
     // Find the row for step four
-    finder = find.ancestor(of: find.text('Step four'), matching: find.byType(Row));
-    expect(find.descendant(of: finder, matching: find.text('•')), findsOneWidget);
-    expect(find.descendant(of: finder, matching: find.text('Step four')), findsOneWidget);
+    finder =
+        find.ancestor(of: find.text('Step four'), matching: find.byType(Row));
+    expect(
+        find.descendant(of: finder, matching: find.text('•')), findsOneWidget);
+    expect(find.descendant(of: finder, matching: find.text('Step four')),
+        findsOneWidget);
   });
 
   testWidgets('should display horizontal rule', (WidgetTester tester) async {
@@ -165,7 +190,8 @@ void main() {
 
   testWidgets('should display hyperlink', (WidgetTester tester) async {
     var launched = false;
-    final channel = MethodChannel('plugins.flutter.io/url_launcher_${Platform.operatingSystem}');
+    final channel = MethodChannel(
+        'plugins.flutter.io/url_launcher_${Platform.operatingSystem}');
     channel.setMockMethodCallHandler((call) async {
       expect(call.arguments['url'], 'https://url.org');
       if (call.method == 'canLaunch') {
@@ -213,21 +239,24 @@ void main() {
     expect(find.byType(Container), findsWidgets);
   });
 
-  testWidgets('should display inline asset hyperlink', (WidgetTester tester) async {
+  testWidgets('should display inline asset hyperlink',
+      (WidgetTester tester) async {
     await tester.pumpWidget(_buildWidget(inlineAssetHyperlinkJson));
 
     // Currently Container is used as a placeholder for unimplemented inlines
     expect(find.byType(Container), findsWidgets);
   });
 
-  testWidgets('should display inline entry hyperlink', (WidgetTester tester) async {
+  testWidgets('should display inline entry hyperlink',
+      (WidgetTester tester) async {
     await tester.pumpWidget(_buildWidget(inlineEntryHyperlinkJson));
 
     // Currently Container is used as a placeholder for unimplemented inlines
     expect(find.byType(Container), findsWidgets);
   });
 
-  testWidgets('should display inline embedded entry', (WidgetTester tester) async {
+  testWidgets('should display inline embedded entry',
+      (WidgetTester tester) async {
     await tester.pumpWidget(_buildWidget(inlineEmbeddedEntryJson));
 
     // Currently Container is used as a placeholder for unimplemented inlines
