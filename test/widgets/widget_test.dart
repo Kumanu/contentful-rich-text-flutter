@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:contentful_rich_text/contentful_rich_text.dart';
+import 'package:contentful_rich_text/types/inlines.dart';
+import 'package:contentful_rich_text/types/types.dart';
 import 'package:contentful_rich_text/widgets/hr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -259,4 +261,34 @@ void main() {
     // Currently Container is used as a placeholder for unimplemented inlines
     expect(find.byType(Container), findsWidgets);
   });
+
+  testWidgets(
+    'should display custom inline embedded entry',
+    (WidgetTester tester) async {
+      final widget = MaterialApp(
+        home: CustomContentfulRichText(
+          jsonDecode(inlineEmbeddedEntryJson),
+        ).documentToWidgetTree,
+      );
+
+      await tester.pumpWidget(widget);
+
+      expect(find.text('embedded entry test'), findsOneWidget);
+    },
+  );
+}
+
+class CustomContentfulRichText extends ContentfulRichText {
+  CustomContentfulRichText(dynamic richTextJson)
+      : super(richTextJson,
+            options: Options(
+                renderNode: RenderNode({
+              INLINES.EMBEDDED_ENTRY.value: (node, next) {
+                return TextSpan(
+                    text: 'embedded entry test',
+                    style: TextStyle(
+                      color: Colors.black,
+                    ));
+              },
+            })));
 }
