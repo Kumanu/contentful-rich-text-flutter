@@ -1,10 +1,10 @@
 import 'package:contentful_rich_text/widgets/bullet.dart';
 import 'package:flutter/material.dart';
 
-enum LI_TYPE { UNORDERED, ORDERED }
+enum ListItemType { unordered, ordered }
 
 class ListItem extends StatelessWidget {
-  final LI_TYPE? type;
+  final ListItemType? type;
   final double? indent;
   final String? text;
   final String? punctuation;
@@ -21,7 +21,7 @@ class ListItem extends StatelessWidget {
   });
 
   ListItem.unordered({
-    this.type = LI_TYPE.UNORDERED,
+    this.type = ListItemType.unordered,
     required this.text,
     this.index,
     this.indent,
@@ -30,7 +30,7 @@ class ListItem extends StatelessWidget {
   });
 
   ListItem.ordered({
-    this.type = LI_TYPE.ORDERED,
+    this.type = ListItemType.ordered,
     required this.text,
     required this.index,
     this.indent,
@@ -41,7 +41,7 @@ class ListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     switch (type) {
-      case LI_TYPE.UNORDERED:
+      case ListItemType.unordered:
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -72,7 +72,7 @@ class ListItem extends StatelessWidget {
             ),
           ],
         );
-      case LI_TYPE.ORDERED:
+      case ListItemType.ordered:
         return Row(
           crossAxisAlignment: CrossAxisAlignment.baseline,
           textBaseline: TextBaseline.alphabetic,

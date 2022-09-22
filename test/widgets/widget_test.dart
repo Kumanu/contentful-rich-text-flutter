@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:contentful_rich_text/contentful_rich_text.dart';
 import 'package:contentful_rich_text/types/inlines.dart';
@@ -191,8 +192,9 @@ void main() {
 
   testWidgets('should display hyperlink', (WidgetTester tester) async {
     var launched = false;
-    MethodChannel('plugins.flutter.io/url_launcher')
-        .setMockMethodCallHandler((call) async {
+    final channel = MethodChannel(
+        'plugins.flutter.io/url_launcher_${Platform.operatingSystem}');
+    channel.setMockMethodCallHandler((call) async {
       expect(call.arguments['url'], 'https://url.org');
       if (call.method == 'canLaunch') {
         return true;
@@ -210,6 +212,7 @@ void main() {
     // Verify that tapping on the link launches the URL
     await tester.tap(finder);
     await tester.pumpAndSettle();
+
     expect(launched, isTrue);
   });
 

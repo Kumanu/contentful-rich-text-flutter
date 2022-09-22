@@ -64,8 +64,8 @@ class ContentfulRichText {
     BLOCKS.LIST_ITEM.value: (node, next) => ListItem(
           text: node.value,
           type: node.nodeType == BLOCKS.OL_LIST.value
-              ? LI_TYPE.ORDERED
-              : LI_TYPE.UNORDERED,
+              ? ListItemType.ordered
+              : ListItemType.unordered,
           children: node['content'] ?? '',
         ),
     BLOCKS.QUOTE.value: (node, next) => Container(), // TODO: implement

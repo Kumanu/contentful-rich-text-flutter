@@ -1,21 +1,23 @@
 name: contentful_rich_text
 description: Rich Text renderer that parses Contentful Rich Text JSON object and
   returns a renderable Flutter widget tree
-version: 1.0.1
+version: 2.0.0
 
 homepage: https://github.com/Kumanu/contentful-rich-text-flutter
 issue_tracker: https://github.com/Kumanu/contentful-rich-text-flutter/issues
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  collection: ^1.15.0
+  collection: ^1.16.0
   html_unescape: ^2.0.0
-  url_launcher: ^6.0.20
+  url_launcher: ^6.1.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints: ^2.0.1
+
