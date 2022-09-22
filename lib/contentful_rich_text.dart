@@ -74,8 +74,7 @@ class ContentfulRichText {
         _defaultInline(INLINES.ASSET_HYPERLINK, node as Inline),
     INLINES.ENTRY_HYPERLINK.value: (node, next) =>
         _defaultInline(INLINES.ENTRY_HYPERLINK, node as Inline),
-    INLINES.EMBEDDED_ENTRY.value: (node, next) =>
-        _defaultInline(INLINES.EMBEDDED_ENTRY, node as Inline),
+    INLINES.EMBEDDED_ENTRY.value: (node, next) => TextSpan(),
     INLINES.HYPERLINK.value: (node, next) => Hyperlink(node, next),
   });
 
@@ -188,6 +187,21 @@ class ContentfulRichText {
         children: (node['content'] ?? '')
             .map<TextSpan>((subNode) => _processInlineNode(subNode) as TextSpan)
             .toList(),
+      );
+    }
+
+    if (node['nodeType'] == 'embedded-entry-inline') {
+      return singletonRenderers.renderNode[node['nodeType']]!(
+        node,
+        (nodes) =>
+            nodes
+                ?.map<TextSpan>(
+                  (node) => _processInlineNode(
+                    node,
+                  ) as TextSpan,
+                )
+                ?.toList() ??
+            <InlineSpan>[],
       );
     }
 
