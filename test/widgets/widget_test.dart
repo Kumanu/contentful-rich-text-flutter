@@ -269,21 +269,7 @@ void main() {
     'should display custom inline embedded entry',
     (WidgetTester tester) async {
       final widget = MaterialApp(
-        home: CustomContentfulRichText(
-          jsonDecode(inlineEmbeddedEntryJson),
-        ).documentToWidgetTree,
-      );
-
-      await tester.pumpWidget(widget);
-
-      expect(find.text('embedded entry test'), findsOneWidget);
-    },
-  );
-}
-
-class CustomContentfulRichText extends ContentfulRichText {
-  CustomContentfulRichText(dynamic richTextJson)
-      : super(richTextJson,
+        home: ContentfulRichText(jsonDecode(inlineEmbeddedEntryJson),
             options: Options(
                 renderNode: RenderNode({
               INLINES.EMBEDDED_ENTRY.value: (node, next) {
@@ -293,5 +279,12 @@ class CustomContentfulRichText extends ContentfulRichText {
                       color: Colors.black,
                     ));
               },
-            })));
+            }))).documentToWidgetTree,
+      );
+
+      await tester.pumpWidget(widget);
+
+      expect(find.text('embedded entry test'), findsOneWidget);
+    },
+  );
 }
