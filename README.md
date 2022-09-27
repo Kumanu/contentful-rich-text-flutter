@@ -187,7 +187,7 @@ The `renderNode` keys should be the `value` of one of the following `BLOCKS` and
 
 - `INLINES`
   - `HYPERLINK`
-  - ~~`EMBEDDED_ENTRY`~~ (this is different from the `BLOCKS.EMBEDDED_ENTRY`) // not implemented yet
+  - `EMBEDDED_ENTRY` (this is different from the `BLOCKS.EMBEDDED_ENTRY`)
   - ~~`ENTRY_HYPERLINK`~~ // not implemented yet
   - ~~`ASSET_HYPERLINK`~~ // not implemented yet
 
