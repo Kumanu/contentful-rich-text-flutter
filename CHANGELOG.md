@@ -2,6 +2,7 @@
 * Migrate to Flutter 3.0.5
 * Upgrade library dependencies
 * Fix lint warnings
+* Added support for inline embedded entries (by https://github.com/rekubot)
 
 ## [1.0.1] - 01/10/2022
 * fix text features (underline and italics) not working
