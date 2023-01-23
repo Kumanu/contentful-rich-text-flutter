@@ -9,6 +9,7 @@ import 'package:contentful_rich_text/types/types.dart';
 import 'package:contentful_rich_text/widgets/heading.dart';
 import 'package:contentful_rich_text/widgets/hr.dart';
 import 'package:contentful_rich_text/widgets/hyperlink.dart';
+import 'package:contentful_rich_text/widgets/inline_embedded_entry.dart';
 import 'package:contentful_rich_text/widgets/list_item.dart';
 import 'package:contentful_rich_text/widgets/ordered_list.dart';
 import 'package:contentful_rich_text/widgets/paragraph.dart';
@@ -57,24 +58,18 @@ class ContentfulRichText {
           next: next,
         ),
     BLOCKS.EMBEDDED_ENTRY.value: (node, next) => Container(), // TODO: implement
-    BLOCKS.UL_LIST.value: (node, next) =>
-        UnorderedList(node['content'] ?? '', next),
-    BLOCKS.OL_LIST.value: (node, next) =>
-        OrderedList(node['content'] ?? '', next),
+    BLOCKS.UL_LIST.value: (node, next) => UnorderedList(node['content'] ?? '', next),
+    BLOCKS.OL_LIST.value: (node, next) => OrderedList(node['content'] ?? '', next),
     BLOCKS.LIST_ITEM.value: (node, next) => ListItem(
           text: node.value,
-          type: node.nodeType == BLOCKS.OL_LIST.value
-              ? ListItemType.ordered
-              : ListItemType.unordered,
+          type: node.nodeType == BLOCKS.OL_LIST.value ? ListItemType.ordered : ListItemType.unordered,
           children: node['content'] ?? '',
         ),
     BLOCKS.QUOTE.value: (node, next) => Container(), // TODO: implement
     BLOCKS.HR.value: (node, next) => Hr(),
-    INLINES.ASSET_HYPERLINK.value: (node, next) =>
-        _defaultInline(INLINES.ASSET_HYPERLINK, node as Inline),
-    INLINES.ENTRY_HYPERLINK.value: (node, next) =>
-        _defaultInline(INLINES.ENTRY_HYPERLINK, node as Inline),
-    INLINES.EMBEDDED_ENTRY.value: (node, next) => TextSpan(),
+    INLINES.ASSET_HYPERLINK.value: (node, next) => _defaultInline(INLINES.ASSET_HYPERLINK, node as Inline),
+    INLINES.ENTRY_HYPERLINK.value: (node, next) => _defaultInline(INLINES.ENTRY_HYPERLINK, node as Inline),
+    INLINES.EMBEDDED_ENTRY.value: (node, next) => InlineEmbeddedEntry(node, next),
     INLINES.HYPERLINK.value: (node, next) => Hyperlink(node, next),
   });
 
@@ -140,8 +135,7 @@ class ContentfulRichText {
       );
     } else {
       Next nextNode = (nodes) => nodeListToWidget(nodes);
-      if (node['nodeType'] == null ||
-          singletonRenderers.renderNode[node['nodeType']] == null) {
+      if (node['nodeType'] == null || singletonRenderers.renderNode[node['nodeType']] == null) {
         // TODO: Figure what to return when passed an unrecognized node.
         return Container();
       }
@@ -184,9 +178,7 @@ class ContentfulRichText {
     // for links to entries only process the child-nodes
     if (node['nodeType'] == 'entry-hyperlink') {
       return TextSpan(
-        children: (node['content'] ?? '')
-            .map<TextSpan>((subNode) => _processInlineNode(subNode) as TextSpan)
-            .toList(),
+        children: (node['content'] ?? '').map<TextSpan>((subNode) => _processInlineNode(subNode) as TextSpan).toList(),
       );
     }
 

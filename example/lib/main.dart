@@ -21,8 +21,7 @@ class MyApp extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               SingleChildScrollView(
-                child: ContentfulRichText(ContentfulData.jsonData)
-                    .documentToWidgetTree,
+                child: ContentfulRichText(ContentfulData.jsonData).documentToWidgetTree,
               ),
               const Padding(
                 padding: EdgeInsets.all(8.0),
