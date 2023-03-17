@@ -595,7 +595,7 @@ const String inlineEmbeddedEntryJson = '''{
             "content": [
               {
                 "marks": [],
-                "value": "",
+                "value": "one",
                 "nodeType": "text",
                 "data": {}
               }
