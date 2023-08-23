@@ -19,13 +19,14 @@ class Heading extends StatelessWidget {
   final Next next;
   final Options? options;
 
-  Heading(
-      {this.text = '',
-      this.level = BLOCKS.HEADING_1,
-      this.content,
-      this.fontWeight = FontWeight.bold,
-      required this.next,
-      this.options});
+  Heading({
+    this.text = '',
+    this.level = BLOCKS.HEADING_1,
+    this.content,
+    this.fontWeight = FontWeight.bold,
+    required this.next,
+    this.options,
+  });
 
   @override
   Widget build(BuildContext context) {

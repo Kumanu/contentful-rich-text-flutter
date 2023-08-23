@@ -1,4 +1,5 @@
 import 'package:contentful_rich_text/contentful_rich_text.dart';
+import 'package:contentful_rich_text/types/types.dart';
 import 'package:example/contentful_data.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +22,11 @@ class MyApp extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               SingleChildScrollView(
-                child: ContentfulRichText(ContentfulData.jsonData).documentToWidgetTree,
+                child: ContentfulRichText(ContentfulData.jsonData,
+                    options: Options(
+                      renderNode: RenderNode({}),
+                      defaultStyle: const TextStyle(),
+                    )).documentToWidgetTree,
               ),
               const Padding(
                 padding: EdgeInsets.all(8.0),
