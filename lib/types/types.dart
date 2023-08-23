@@ -82,11 +82,26 @@ class RenderMark<T> {
 }
 
 class Options {
+  Options({
+    required this.renderNode,
+    this.renderMark,
+    required this.defaultStyle,
+    this.textAlign = TextAlign.center,
+    this.mainAxisAlignment = MainAxisAlignment.start,
+  });
+
   /// Node renderers
   RenderNode renderNode;
 
   /// Mark renderers
   RenderMark? renderMark;
 
-  Options({required this.renderNode, this.renderMark});
+  /// Default Style
+  TextStyle defaultStyle;
+
+  /// Text Align
+  TextAlign textAlign;
+
+  /// Main Axis Alignment
+  MainAxisAlignment mainAxisAlignment;
 }

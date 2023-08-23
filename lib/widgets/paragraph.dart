@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 class Paragraph extends StatelessWidget {
   final dynamic node;
   final Next next;
+  final Options? options;
 
-  Paragraph(this.node, this.next);
+  Paragraph(this.node, this.next, this.options);
 
   @override
   Widget build(BuildContext context) {
     return Text.rich(
+      style: options?.defaultStyle,
+      textAlign: options?.textAlign,
       TextSpan(
         children: [
           TextSpan(

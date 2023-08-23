@@ -16,6 +16,7 @@ class Hyperlink extends TextSpan {
               .getMarksTextStyles(
                 TextNode(node).marks,
                 singletonRenderers.renderMark,
+                singletonRenderers.defaultStyle,
               )
               .copyWith(
                 color: Colors.blue,

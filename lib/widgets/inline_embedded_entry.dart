@@ -11,6 +11,7 @@ class InlineEmbeddedEntry extends TextSpan {
               .getMarksTextStyles(
                 TextNode(node).marks,
                 singletonRenderers.renderMark,
+                singletonRenderers.defaultStyle,
               )
               // TODO: Check if only marks should be used instead of these hard coded values
               .copyWith(

@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 /// Map of all Contentful marks
 class MARKS {
+  const MARKS._internal(this._key, this._value);
   final String _key;
   final String _value;
-  const MARKS._internal(this._key, this._value);
 
   @override
   String toString() => 'MARKS.$_key';
@@ -48,12 +48,15 @@ class MARKS {
   });
 
   static TextStyle getMarksTextStyles(
-      List<Mark> marks, Map<dynamic, TextStyle> renderMark) {
+    List<Mark> marks,
+    Map<dynamic, TextStyle> renderMark,
+    TextStyle defaultStyle,
+  ) {
     Map<String, TextStyle?> textStyles = {};
-    marks.forEach((Mark mark) {
+    for (var mark in marks) {
       textStyles.putIfAbsent(mark.type, () => renderMark[mark.type]);
-    });
-    return TextStyle(
+    }
+    return defaultStyle.copyWith(
       fontWeight: textStyles['bold']?.fontWeight,
       fontStyle: textStyles['italic']?.fontStyle,
       decoration: textStyles['underline']?.decoration,
