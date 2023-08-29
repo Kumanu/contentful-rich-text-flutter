@@ -1,3 +1,9 @@
+## [2.1.0] - 08/29/2023
+* Migrate to Flutter 3.10.6
+* Bump Dart SDK version to 3.0
+* Add color option for hyperlink text
+* Upgrade dependencies
+
 ## [2.0.0] - 08/08/2022
 * Migrate to Flutter 3.0.5
 * Upgrade library dependencies
