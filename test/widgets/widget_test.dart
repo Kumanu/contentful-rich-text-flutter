@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:contentful_rich_text/contentful_rich_text.dart';
 import 'package:contentful_rich_text/types/inlines.dart';
@@ -167,7 +166,7 @@ void main() {
 
   testWidgets('should display hyperlink', (WidgetTester tester) async {
     var launched = false;
-    final channel = MethodChannel('plugins.flutter.io/url_launcher_${Platform.operatingSystem}');
+    final channel = MethodChannel('plugins.flutter.io/url_launcher');
     tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(channel, (call) async {
       expect(call.arguments['url'], 'https://url.org');
       if (call.method == 'canLaunch') {
