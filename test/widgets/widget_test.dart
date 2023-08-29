@@ -168,7 +168,7 @@ void main() {
   testWidgets('should display hyperlink', (WidgetTester tester) async {
     var launched = false;
     final channel = MethodChannel('plugins.flutter.io/url_launcher_${Platform.operatingSystem}');
-    channel.setMockMethodCallHandler((call) async {
+    tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(channel, (call) async {
       expect(call.arguments['url'], 'https://url.org');
       if (call.method == 'canLaunch') {
         return true;
