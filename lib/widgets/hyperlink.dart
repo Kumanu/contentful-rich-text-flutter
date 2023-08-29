@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Hyperlink extends TextSpan {
-  Hyperlink(node, next)
+  Hyperlink(node, next, {Color? color})
       : assert(node['data'] != null),
         assert(node['data']['uri'] != null), // ensure uri exists for hyperlink
         assert(node['data']['uri'] != ''),
@@ -18,7 +18,7 @@ class Hyperlink extends TextSpan {
                 singletonRenderers.renderMark,
               )
               .copyWith(
-                color: Colors.blue,
+                color: color ?? Colors.blue,
                 decoration: TextDecoration.underline,
               ),
           children: next(node['content']),
