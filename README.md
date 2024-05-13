@@ -166,7 +166,7 @@ RenderNodes are the various content nodes that Contentful sends for the Rich Tex
 
 Note: Not all of the nodes sent from Contentful are currently implemented. See below for the implementation status.
 
-The `renderNode` keys should be the `value` of one of the following `BLOCKS` and `INLINES` properties as defined in [`contentful_rich_text/types`](https://github.com/JOOLHealth/contentful_rich_text/tree/master/lib/types):
+The `renderNode` keys should be the `value` of one of the following `BLOCKS` and `INLINES` properties as defined in [`contentful_rich_text/types`](https://github.com/Kumanu/contentful-rich-text-flutter/tree/main/lib/types):
 
 - `BLOCKS`
   - `DOCUMENT`
@@ -196,7 +196,7 @@ RenderMarks are the various text styles that can be applied to text inline.
 
 Note: Not all of the marks sent from Contentful are currently implemented. See below for the implementation status.
 
-The `renderMark` keys should be the value of one of the following `MARKS` properties as defined in [`contentful_rich_text/types`](https://github.com/JOOLHealth/contentful_rich_text/tree/master/lib/types):
+The `renderMark` keys should be the value of one of the following `MARKS` properties as defined in [`contentful_rich_text/types`](https://github.com/Kumanu/contentful-rich-text-flutter/tree/main/lib/types):
 
 - `BOLD`
 - `ITALIC`
