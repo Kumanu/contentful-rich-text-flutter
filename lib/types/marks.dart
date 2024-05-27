@@ -57,6 +57,7 @@ class MARKS {
       fontWeight: textStyles['bold']?.fontWeight,
       fontStyle: textStyles['italic']?.fontStyle,
       decoration: textStyles['underline']?.decoration,
+      fontFamily: textStyles['bold']?.fontFamily ?? textStyles['italic']?.fontFamily,
     );
   }
 
