@@ -47,18 +47,23 @@ class MARKS {
     MARKS.UNDERLINE.value: TextStyle(decoration: TextDecoration.underline),
   });
 
-  static TextStyle getMarksTextStyles(
-      List<Mark> marks, Map<dynamic, TextStyle> renderMark) {
-    Map<String, TextStyle?> textStyles = {};
+  static TextStyle getMarksTextStyles(List<Mark> marks, Map<dynamic, TextStyle> renderMark) {
+    TextStyle combinedStyle = TextStyle();
+    TextStyle combinedTypeStyle = TextStyle();
+
     marks.forEach((Mark mark) {
-      textStyles.putIfAbsent(mark.type, () => renderMark[mark.type]);
+      if (renderMark.containsKey(mark.type)) {
+        TextStyle markStyle = renderMark[mark.type]!;
+        combinedStyle = combinedStyle.merge(markStyle);
+        combinedTypeStyle = combinedTypeStyle.copyWith(
+          fontWeight: mark.type == 'bold' ? markStyle.fontWeight : combinedTypeStyle.fontWeight,
+          fontStyle: mark.type == 'italic' ? markStyle.fontStyle : combinedTypeStyle.fontStyle,
+          decoration: mark.type == 'underline' ? markStyle.decoration : combinedTypeStyle.decoration,
+        );
+      }
     });
-    return TextStyle(
-      fontWeight: textStyles['bold']?.fontWeight,
-      fontStyle: textStyles['italic']?.fontStyle,
-      decoration: textStyles['underline']?.decoration,
-      fontFamily: textStyles['bold']?.fontFamily ?? textStyles['italic']?.fontFamily,
-    );
+
+    return combinedTypeStyle.merge(combinedStyle);
   }
 
   static Map<dynamic, TextStyle> renderMarks(
