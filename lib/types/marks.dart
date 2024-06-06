@@ -63,7 +63,7 @@ class MARKS {
       }
     });
 
-    return combinedTypeStyle.merge(combinedStyle);
+    return combinedStyle.merge(combinedTypeStyle);
   }
 
   static Map<dynamic, TextStyle> renderMarks(
