@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Bullet extends Text {
-  const Bullet({
+  Bullet({
     String? bullet,
     Key? key,
     TextStyle? style,
@@ -22,7 +22,7 @@ class Bullet extends Text {
           locale: locale,
           softWrap: softWrap,
           overflow: overflow,
-          textScaleFactor: textScaleFactor,
+          textScaler: TextScaler.linear(textScaleFactor ?? 1.0),
           maxLines: maxLines,
           semanticsLabel: semanticsLabel,
         );

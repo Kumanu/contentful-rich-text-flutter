@@ -1,3 +1,7 @@
+## [2.2.0] - 06/43/2024
+* Merge PR #39 - Allow marks to be styled
+* Upgrade dependencies
+
 ## [2.1.0] - 08/29/2023
 * Migrate to Flutter 3.10.6
 * Bump Dart SDK version to 3.0
