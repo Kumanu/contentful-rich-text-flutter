@@ -1,4 +1,7 @@
-## [2.2.0] - 06/43/2024
+## [2.2.1] - 06/25/2024
+* Fix date
+
+## [2.2.0] - 06/24/2024
 * Merge PR #39 - Allow marks to be styled
 * Upgrade dependencies
 
