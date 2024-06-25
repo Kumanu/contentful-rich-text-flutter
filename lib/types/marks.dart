@@ -43,26 +43,31 @@ class MARKS {
     MARKS.UNDERLINE.value: TextStyle(decoration: TextDecoration.underline),
   });
 
-static TextStyle getMarksTextStyles(List<Mark> marks, Map<dynamic, TextStyle> renderMark) {
-  TextStyle combinedStyle = TextStyle();
-  TextStyle combinedTypeStyle = TextStyle();
+  static TextStyle getMarksTextStyles(
+      List<Mark> marks, Map<dynamic, TextStyle> renderMark) {
+    TextStyle combinedStyle = TextStyle();
+    TextStyle combinedTypeStyle = TextStyle();
 
-  marks.forEach((Mark mark) {
-    if (renderMark.containsKey(mark.type)) {
-      TextStyle markStyle = renderMark[mark.type]!;
-      combinedStyle = combinedStyle.merge(markStyle);
-      combinedTypeStyle = combinedTypeStyle.copyWith(
-        fontWeight: mark.type == 'bold' ? markStyle.fontWeight : combinedTypeStyle.fontWeight,
-        fontStyle: mark.type == 'italic' ? markStyle.fontStyle : combinedTypeStyle.fontStyle,
-        decoration: mark.type == 'underline' ? markStyle.decoration : combinedTypeStyle.decoration,
-      );
-    }
-  });
+    marks.forEach((Mark mark) {
+      if (renderMark.containsKey(mark.type)) {
+        TextStyle markStyle = renderMark[mark.type]!;
+        combinedStyle = combinedStyle.merge(markStyle);
+        combinedTypeStyle = combinedTypeStyle.copyWith(
+          fontWeight: mark.type == 'bold'
+              ? markStyle.fontWeight
+              : combinedTypeStyle.fontWeight,
+          fontStyle: mark.type == 'italic'
+              ? markStyle.fontStyle
+              : combinedTypeStyle.fontStyle,
+          decoration: mark.type == 'underline'
+              ? markStyle.decoration
+              : combinedTypeStyle.decoration,
+        );
+      }
+    });
 
-  return combinedTypeStyle.merge(combinedStyle);
-}
-
-
+    return combinedTypeStyle.merge(combinedStyle);
+  }
 
   static Map<dynamic, TextStyle> renderMarks(
           Map<dynamic, TextStyle>? optionRenderMarks) =>
